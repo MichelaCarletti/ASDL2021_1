@@ -73,6 +73,22 @@ public class BinaryHeapMinPriorityQueue {
         }
     }
 
+    private void shiftDown(PriorityQueueElement element){
+        PriorityQueueElement min = element;
+        PriorityQueueElement left = leftChild(element);
+        if (min.getPriority() > left.getPriority()) {
+            min = left;
+        }
+        PriorityQueueElement right = rightChild(element);
+        if (min.getPriority() > right.getPriority()) {
+            min = right;
+        }
+        if (element != min) {
+            swap(element, min);
+            shiftDown(min);
+        }
+    }
+
     private void swap(PriorityQueueElement element1, PriorityQueueElement element2){
         Collections.swap(this.heap,element1.getHandle(),element2.getHandle());      //Scambia la posizione nell'albero di element1 ed element2
         int temp = element1.getHandle();
@@ -132,8 +148,17 @@ public class BinaryHeapMinPriorityQueue {
         if(heap.isEmpty()){
             throw new NoSuchElementException("La coda di priorità è vuota");
         }
-        return this.heap.get(0);
-
+        PriorityQueueElement min = minimum();
+        if(this.heap.size() == 1){
+            return this.heap.remove(0);
+        }
+        else {
+            PriorityQueueElement leaf = this.heap.get(heap.size() - 1);
+            swap(min, leaf);
+            shiftDown(leaf);
+            this.heap.remove(min.getHandle());
+            return min;
+        }
     }
 
     /**
