@@ -297,9 +297,8 @@ class AdjacencyMatrixDirectedGraphTest {
         graph.addEdge(edge2);
         graph.addEdge(edge3);
         graph.addEdge(edge4);
-        Set<GraphEdge<Integer>> adjacentNodes = new HashSet<>();
-        adjacentNodes.add(edge3);
-        adjacentNodes.add(edge4);
+        Set<GraphNode<Integer>> adjacentNodes = new HashSet<>();
+        adjacentNodes.add(node2);
         Assertions.assertEquals(adjacentNodes,graph.getAdjacentNodesOf(node3));
         boolean nullException = false;
         boolean illegalException = false;
@@ -317,8 +316,6 @@ class AdjacencyMatrixDirectedGraphTest {
         }
         Assertions.assertTrue(nullException);
         Assertions.assertTrue(illegalException);
-
-        //TODO non funziona
     }
 
     @Test
@@ -402,9 +399,8 @@ class AdjacencyMatrixDirectedGraphTest {
         graph.addNode(node1);
         graph.addNode(node2);
         graph.addNode(node3);
-        graph.addNode(node4);
         GraphEdge<Integer> edge1 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
-        GraphEdge<Integer> edge2 = new GraphEdge<Integer>(node1,node3, graph.isDirected());
+        GraphEdge<Integer> edge2 = new GraphEdge<Integer>(node4,node3, graph.isDirected());
         Assertions.assertTrue(graph.addEdge(new GraphEdge(node1,node2, graph.isDirected())));
         Assertions.assertTrue(graph.addEdge(edge1));
         Assertions.assertFalse(graph.addEdge(edge1));

@@ -185,7 +185,9 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
         int indexNode = this.nodesIndex.get(node);
         ArrayList<GraphEdge<L>> nodeEdges = this.matrix.get(indexNode);
         for(GraphEdge<L> edge : nodeEdges){
-            nodes.add(edge.getNode2());
+            if(edge != null) {
+                nodes.add(edge.getNode2());
+            }
         }
         return nodes;
     }
@@ -233,7 +235,7 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
         int nodeIndex1 = this.nodesIndex.get(edge.getNode1());
         int nodeIndex2 = this.nodesIndex.get(edge.getNode2());
         ArrayList<GraphEdge<L>> edgesList = this.matrix.get(nodeIndex1);
-        if(edge.equals(edgesList.get(nodeIndex2))) {
+        if(!edge.equals(edgesList.get(nodeIndex2))) {
             edgesList.set(nodeIndex2, edge);
             return true;
         }
@@ -322,7 +324,7 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
         int nodeIndex1 = this.nodesIndex.get(node1);
         ArrayList<GraphEdge<L>> edgesList = this.matrix.get(nodeIndex1);
         for(GraphEdge<L> singleEdge : edgesList){
-            if(singleEdge.getNode2().equals(node2)){
+            if((singleEdge != null)&&(singleEdge.getNode2().equals(node2))){
                 return singleEdge;
             }
         }

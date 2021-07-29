@@ -4,6 +4,7 @@
 package it.unicam.cs.asdl2021.totalproject2;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.NoSuchElementException;
 
 /**
@@ -39,8 +40,6 @@ public class BinaryHeapMinPriorityQueue {
      */
     public BinaryHeapMinPriorityQueue() {
        this.heap = new ArrayList<>();
-
-       //TODO implementare
     }
 
     /**
@@ -58,9 +57,51 @@ public class BinaryHeapMinPriorityQueue {
         if(element == null){
             throw new NullPointerException("L'elemento passato è nullo");
         }
-        this.heap.add(0,element);
+        appendElement(element);
+        shiftUp(element);
+    }
 
-        //TODO come faccio a sapere quale priorità dovrò dare ad element?
+    private void appendElement(PriorityQueueElement element){
+        element.setHandle(heap.size());             //Aggiorno l'handle dell'elemento
+        this.heap.add(element);
+    }
+
+    private void shiftUp(PriorityQueueElement element){
+        while (element.getHandle() > 0 &&
+                parent(element).getPriority() > element.getPriority()){
+            swap(parent(element), element);
+        }
+    }
+
+    private void swap(PriorityQueueElement element1, PriorityQueueElement element2){
+        Collections.swap(this.heap,element1.getHandle(),element2.getHandle());      //Scambia la posizione nell'albero di element1 ed element2
+        int temp = element1.getHandle();
+        element1.setHandle(element2.getHandle());
+        element2.setHandle(temp);
+    }
+
+    private int parent(int handle){
+        return (handle - 1) / 2;
+    }
+
+    private int leftChild(int handle){
+        return (handle * 2) + 1;
+    }
+
+    private int rightChild(int handle){
+        return (handle * 2) + 2;
+    }
+
+    private PriorityQueueElement parent(PriorityQueueElement element){
+        return (this.heap.get(parent(element.getHandle())));
+    }
+
+    private PriorityQueueElement leftChild(PriorityQueueElement element){
+        return (this.heap.get(leftChild(element.getHandle())));
+    }
+
+    private PriorityQueueElement rightChild(PriorityQueueElement element){
+        return (this.heap.get(rightChild(element.getHandle())));
     }
 
     /**
@@ -76,17 +117,7 @@ public class BinaryHeapMinPriorityQueue {
         if(heap.isEmpty()){
             throw new NoSuchElementException("La coda di priorità è vuota");
         }
-        double minimum = 1000;
-        PriorityQueueElement minElement = null;
-        for(PriorityQueueElement element : heap){
-            if(element.getPriority() < minimum){
-                minimum = element.getPriority();
-                minElement = element;
-            }
-        }
-        return minElement;
-
-        //TODO il minimo elemento è quello con la priotià più bassa?
+        return this.heap.get(0);
     }
 
     /**
@@ -101,17 +132,8 @@ public class BinaryHeapMinPriorityQueue {
         if(heap.isEmpty()){
             throw new NoSuchElementException("La coda di priorità è vuota");
         }
-        double minimum = 1000;
-        PriorityQueueElement minElement = null;
-        for(PriorityQueueElement element : heap){
-            if(element.getPriority() < minimum){
-                minimum = element.getPriority();
-                minElement = element;
-            }
-        }
-        //TODO esiste un metodo per estarre e rimuovere? E poi serve un metodo per sistemare l'heap
-        return minElement;
-        // TODO implementare
+        return this.heap.get(0);
+
     }
 
     /**
