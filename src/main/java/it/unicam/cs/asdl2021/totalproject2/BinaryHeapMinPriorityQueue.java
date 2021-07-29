@@ -38,7 +38,9 @@ public class BinaryHeapMinPriorityQueue {
      * 
      */
     public BinaryHeapMinPriorityQueue() {
-        // TODO implementare
+       this.heap = new ArrayList<>();
+
+       //TODO implementare
     }
 
     /**
@@ -53,7 +55,12 @@ public class BinaryHeapMinPriorityQueue {
      *                                  if the element passed is null
      */
     public void insert(PriorityQueueElement element) {
-        // TODO implementare
+        if(element == null){
+            throw new NullPointerException("L'elemento passato è nullo");
+        }
+        this.heap.add(0,element);
+
+        //TODO come faccio a sapere quale priorità dovrò dare ad element?
     }
 
     /**
@@ -66,8 +73,20 @@ public class BinaryHeapMinPriorityQueue {
      *                                    if this min-priority queue is empty
      */
     public PriorityQueueElement minimum() {
-        // TODO implementare
-        return null;
+        if(heap.isEmpty()){
+            throw new NoSuchElementException("La coda di priorità è vuota");
+        }
+        double minimum = 1000;
+        PriorityQueueElement minElement = null;
+        for(PriorityQueueElement element : heap){
+            if(element.getPriority() < minimum){
+                minimum = element.getPriority();
+                minElement = element;
+            }
+        }
+        return minElement;
+
+        //TODO il minimo elemento è quello con la priotià più bassa?
     }
 
     /**
@@ -79,8 +98,20 @@ public class BinaryHeapMinPriorityQueue {
      *                                    if this min-priority queue is empty
      */
     public PriorityQueueElement extractMinimum() {
+        if(heap.isEmpty()){
+            throw new NoSuchElementException("La coda di priorità è vuota");
+        }
+        double minimum = 1000;
+        PriorityQueueElement minElement = null;
+        for(PriorityQueueElement element : heap){
+            if(element.getPriority() < minimum){
+                minimum = element.getPriority();
+                minElement = element;
+            }
+        }
+        //TODO esiste un metodo per estarre e rimuovere? E poi serve un metodo per sistemare l'heap
+        return minElement;
         // TODO implementare
-        return null;
     }
 
     /**
@@ -115,8 +146,12 @@ public class BinaryHeapMinPriorityQueue {
      * @return true if this priority queue is empty, false otherwise
      */
     public boolean isEmpty() {
-        // TODO implementare
+        if(heap.size() == 0) {
+            return true;
+        }
         return false;
+
+        //TODO implementare
     }
 
     /**
@@ -125,8 +160,12 @@ public class BinaryHeapMinPriorityQueue {
      * @return the number of elements currently in this queue.
      */
     public int size() {
-        // TODO implementare
-        return 0;
+        int cont = 0;
+        for(PriorityQueueElement element : heap){
+            cont++;
+        }
+        return cont;
+        //TODO implementare
     }
 
     /**

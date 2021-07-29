@@ -170,12 +170,51 @@ class AdjacencyMatrixDirectedGraphTest {
 
     @Test
     final void testGetNodeIndexOf() {
-        fail("Not yet implemented"); // TODO
+        AdjacencyMatrixDirectedGraph graph = new AdjacencyMatrixDirectedGraph();
+        GraphNode<Integer> node1 = new GraphNode<Integer>(0);
+        GraphNode<Integer> node2 = new GraphNode<Integer>(1);
+        GraphNode<Integer> node3 = new GraphNode<Integer>(2);
+        GraphNode<Integer> node4 = new GraphNode<Integer>(3);
+        graph.addNode(node1);
+        graph.addNode(node2);
+        graph.addNode(node3);
+        Assertions.assertEquals(graph.nodesIndex.get(node1),graph.getNodeIndexOf(0));
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            graph.getNodeIndexOf(null);
+        }
+        catch(NullPointerException e){
+            nullException = true;
+        }
+        try{
+            graph.getNodeIndexOf(node4);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(nullException);
+        Assertions.assertTrue(illegalException);
     }
 
     @Test
     final void testGetNodeAtIndex() {
-        fail("Not yet implemented"); // TODO
+        AdjacencyMatrixDirectedGraph graph = new AdjacencyMatrixDirectedGraph();
+        GraphNode<Integer> node1 = new GraphNode<Integer>(0);
+        GraphNode<Integer> node2 = new GraphNode<Integer>(1);
+        GraphNode<Integer> node3 = new GraphNode<Integer>(2);
+        graph.addNode(node1);
+        graph.addNode(node2);
+        graph.addNode(node3);
+        Assertions.assertEquals(node1,graph.getNodeAtIndex(0));
+        boolean outException = false;
+        try{
+            graph.getNodeAtIndex(5);
+        }
+        catch(IndexOutOfBoundsException e){
+            outException = true;
+        }
+        Assertions.assertTrue(outException);
     }
 
     @Test
@@ -218,37 +257,253 @@ class AdjacencyMatrixDirectedGraphTest {
 
     @Test
     final void testGetEdgeAtNodeIndexes() {
-        fail("Not yet implemented"); // TODO
+        AdjacencyMatrixDirectedGraph graph = new AdjacencyMatrixDirectedGraph();
+        GraphNode<Integer> node1 = new GraphNode<Integer>(0);
+        GraphNode<Integer> node2 = new GraphNode<Integer>(1);
+        GraphNode<Integer> node3 = new GraphNode<Integer>(2);
+        GraphNode<Integer> node4 = new GraphNode<Integer>(3);
+        graph.addNode(node1);
+        graph.addNode(node2);
+        graph.addNode(node3);
+        GraphEdge<Integer> edge1 = new GraphEdge<Integer>(node1,node3, graph.isDirected());
+        GraphEdge<Integer> edge2 = new GraphEdge<Integer>(node2,node1, graph.isDirected());
+        GraphEdge<Integer> edge3 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        GraphEdge<Integer> edge4 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        graph.addEdge(edge1);
+        graph.addEdge(edge2);
+        graph.addEdge(edge3);
+        //int nodeIndex1 = graph.nodesIndex.get(node1);
+        //int nodeIndex3 = graph.nodesIndex.get(node3);
+        //Assertions.assertEquals(edge1, graph.getEdgeAtNodeIndexes(nodeIndex1,nodeIndex3));
+        fail();
+        //TODO non funziona e gestione IndexOutOFBoundException. graph.nodeIndex.get di solito funziona
     }
 
     @Test
     final void testGetAdjacentNodesOf() {
-        fail("Not yet implemented"); // TODO
+        AdjacencyMatrixDirectedGraph graph = new AdjacencyMatrixDirectedGraph();
+        GraphNode<Integer> node1 = new GraphNode<Integer>(0);
+        GraphNode<Integer> node2 = new GraphNode<Integer>(1);
+        GraphNode<Integer> node3 = new GraphNode<Integer>(2);
+        GraphNode<Integer> node4 = new GraphNode<Integer>(3);
+        graph.addNode(node1);
+        graph.addNode(node2);
+        graph.addNode(node3);
+        GraphEdge<Integer> edge1 = new GraphEdge<Integer>(node1,node3, graph.isDirected());
+        GraphEdge<Integer> edge2 = new GraphEdge<Integer>(node2,node1, graph.isDirected());
+        GraphEdge<Integer> edge3 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        GraphEdge<Integer> edge4 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        graph.addEdge(edge1);
+        graph.addEdge(edge2);
+        graph.addEdge(edge3);
+        graph.addEdge(edge4);
+        Set<GraphEdge<Integer>> adjacentNodes = new HashSet<>();
+        adjacentNodes.add(edge3);
+        adjacentNodes.add(edge4);
+        Assertions.assertEquals(adjacentNodes,graph.getAdjacentNodesOf(node3));
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            graph.getAdjacentNodesOf(null);
+        }
+        catch(NullPointerException e){
+            nullException = true;
+        }
+        try{
+            graph.getAdjacentNodesOf(node4);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(nullException);
+        Assertions.assertTrue(illegalException);
+
+        //TODO non funziona
     }
 
     @Test
     final void testGetPredecessorNodesOf() {
-        fail("Not yet implemented"); // TODO
+        AdjacencyMatrixDirectedGraph graph = new AdjacencyMatrixDirectedGraph();
+        GraphNode<Integer> node1 = new GraphNode<Integer>(0);
+        GraphNode<Integer> node2 = new GraphNode<Integer>(1);
+        GraphNode<Integer> node3 = new GraphNode<Integer>(2);
+        GraphNode<Integer> node4 = new GraphNode<Integer>(3);
+        graph.addNode(node1);
+        graph.addNode(node2);
+        graph.addNode(node3);
+        GraphEdge<Integer> edge1 = new GraphEdge<Integer>(node1,node3, graph.isDirected());
+        GraphEdge<Integer> edge2 = new GraphEdge<Integer>(node2,node1, graph.isDirected());
+        GraphEdge<Integer> edge3 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        GraphEdge<Integer> edge4 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        graph.addEdge(edge1);
+        graph.addEdge(edge2);
+        graph.addEdge(edge3);
+        graph.addEdge(edge4);
+        Set<GraphEdge<Integer>> predecessorNodes = new HashSet<>();
+        predecessorNodes.add(edge3);
+        predecessorNodes.add(edge4);
+        Assertions.assertEquals(predecessorNodes,graph.getPredecessorNodesOf(node2));
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            graph.getAdjacentNodesOf(null);
+        }
+        catch(NullPointerException e){
+            nullException = true;
+        }
+        try{
+            graph.getAdjacentNodesOf(node4);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(nullException);
+        Assertions.assertTrue(illegalException);
+
+        //TODO non funziona
     }
 
     @Test
     final void testGetEdges() {
-        fail("Not yet implemented"); // TODO
+        AdjacencyMatrixDirectedGraph graph = new AdjacencyMatrixDirectedGraph();
+        GraphNode<Integer> node1 = new GraphNode<Integer>(0);
+        GraphNode<Integer> node2 = new GraphNode<Integer>(1);
+        GraphNode<Integer> node3 = new GraphNode<Integer>(2);
+        GraphNode<Integer> node4 = new GraphNode<Integer>(3);
+        graph.addNode(node1);
+        graph.addNode(node2);
+        graph.addNode(node3);
+        graph.addNode(node4);
+        GraphEdge<Integer> edge1 = new GraphEdge<Integer>(node1,node3, graph.isDirected());
+        GraphEdge<Integer> edge2 = new GraphEdge<Integer>(node2,node1, graph.isDirected());
+        GraphEdge<Integer> edge3 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        GraphEdge<Integer> edge4 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        graph.addEdge(edge1);
+        graph.addEdge(edge2);
+        graph.addEdge(edge3);
+        graph.addEdge(edge4);
+        Set<GraphEdge<Integer>> edges = new HashSet<>();
+        edges.add(edge1);
+        edges.add(edge2);
+        edges.add(edge3);
+        edges.add(edge4);
+        Assertions.assertEquals(edges,graph.getEdges());
+
+        //TODO non funziona
     }
 
     @Test
     final void testAddEdge() {
-        fail("Not yet implemented"); // TODO
+        AdjacencyMatrixDirectedGraph graph = new AdjacencyMatrixDirectedGraph();
+        GraphNode<Integer> node1 = new GraphNode<Integer>(0);
+        GraphNode<Integer> node2 = new GraphNode<Integer>(1);
+        GraphNode<Integer> node3 = new GraphNode<Integer>(2);
+        GraphNode<Integer> node4 = new GraphNode<Integer>(3);
+        graph.addNode(node1);
+        graph.addNode(node2);
+        graph.addNode(node3);
+        graph.addNode(node4);
+        GraphEdge<Integer> edge1 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        GraphEdge<Integer> edge2 = new GraphEdge<Integer>(node1,node3, graph.isDirected());
+        Assertions.assertTrue(graph.addEdge(new GraphEdge(node1,node2, graph.isDirected())));
+        Assertions.assertTrue(graph.addEdge(edge1));
+        Assertions.assertFalse(graph.addEdge(edge1));
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            graph.addEdge(null);
+        }
+        catch(NullPointerException e){
+            nullException = true;
+        }
+        try{
+            graph.addEdge(edge2);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(nullException);
+        Assertions.assertTrue(illegalException);
+
+        //TODO non funziona
     }
 
     @Test
     final void testRemoveEdge() {
-        fail("Not yet implemented"); // TODO
+        AdjacencyMatrixDirectedGraph graph = new AdjacencyMatrixDirectedGraph();
+        GraphNode<Integer> node1 = new GraphNode<Integer>(0);
+        GraphNode<Integer> node2 = new GraphNode<Integer>(1);
+        GraphNode<Integer> node3 = new GraphNode<Integer>(2);
+        GraphNode<Integer> node4 = new GraphNode<Integer>(3);
+        graph.addNode(node1);
+        graph.addNode(node2);
+        graph.addNode(node3);
+        GraphEdge<Integer> edge1 = new GraphEdge<Integer>(node1,node3, graph.isDirected());
+        GraphEdge<Integer> edge2 = new GraphEdge<Integer>(node2,node1, graph.isDirected());
+        GraphEdge<Integer> edge3 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        GraphEdge<Integer> edge4 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        graph.addEdge(edge1);
+        graph.addEdge(edge3);
+        graph.addEdge(edge4);
+        Assertions.assertTrue(graph.removeEdge(edge1));
+        Assertions.assertFalse(graph.removeEdge(edge1));
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            graph.removeEdge(null);
+        }
+        catch(NullPointerException e){
+            nullException = true;
+        }
+        try{
+            graph.removeEdge(edge2);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(nullException);
+        Assertions.assertTrue(illegalException);
+
+        //TODO non funziona
     }
 
     @Test
     final void testContainsEdge() {
-        fail("Not yet implemented"); // TODO
+        AdjacencyMatrixDirectedGraph graph = new AdjacencyMatrixDirectedGraph();
+        GraphNode<Integer> node1 = new GraphNode<Integer>(0);
+        GraphNode<Integer> node2 = new GraphNode<Integer>(1);
+        GraphNode<Integer> node3 = new GraphNode<Integer>(2);
+        GraphNode<Integer> node4 = new GraphNode<Integer>(3);
+        graph.addNode(node1);
+        graph.addNode(node2);
+        graph.addNode(node3);
+        GraphEdge<Integer> edge1 = new GraphEdge<Integer>(node1,node3, graph.isDirected());
+        GraphEdge<Integer> edge2 = new GraphEdge<Integer>(node2,node1, graph.isDirected());
+        GraphEdge<Integer> edge3 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        GraphEdge<Integer> edge4 = new GraphEdge<Integer>(node3,node2, graph.isDirected());
+        graph.addEdge(edge1);
+        graph.addEdge(edge3);
+        graph.addEdge(edge4);
+        Assertions.assertTrue(graph.containsEdge(edge1));
+        Assertions.assertFalse(graph.containsEdge(edge1));
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            graph.containsEdge(null);
+        }
+        catch(NullPointerException e){
+            nullException = true;
+        }
+        try{
+            graph.containsEdge(edge4);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(nullException);
+        Assertions.assertTrue(illegalException);
+
+        //TODO non funziona
     }
 
     @Test

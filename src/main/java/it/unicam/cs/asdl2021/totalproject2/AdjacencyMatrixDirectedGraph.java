@@ -294,18 +294,18 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
 
     @Override
     public Set<GraphEdge<L>> getIngoingEdgesOf(GraphNode<L> node) {
-        Set<GraphEdge<L>> edges = new HashSet<>();
         if(!nodesIndex.containsKey(node)){
             throw  new IllegalArgumentException("Il nodo passato non esiste nel grafo");
         }
         if(node == null){
             throw new NullPointerException("Il nodo passato è nullo");
         }
-        for(ArrayList<GraphEdge<L>> edgesList : this.matrix) {
-            for (GraphEdge<L> singleEdge : edgesList) {
-                if((singleEdge.getNode2().equals(node))){
-                    edges.add(singleEdge);
-                }
+        Set<GraphEdge<L>> edges = new HashSet<>();
+        int nodeIndex1 = this.nodesIndex.get(node);
+        ArrayList<GraphEdge<L>> edgesList = this.matrix.get(nodeIndex1);
+        for(GraphEdge<L> singleEdge : edgesList){
+            if(singleEdge.getNode2().equals(node)){
+                edges.add(singleEdge);
             }
         }
         return edges;
@@ -319,11 +319,11 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
         if((!this.nodesIndex.containsKey(node1)||((!this.nodesIndex.containsKey(node2))))){
             throw  new IllegalArgumentException("Il nodo passato non esiste nel grafo");
         }
-        for(ArrayList<GraphEdge<L>> edgesList : this.matrix) {
-            for (GraphEdge<L> singleEdge : edgesList) {
-                if((singleEdge.getNode1().equals(node1))&&(singleEdge.getNode2().equals(node2))){
-                    return singleEdge;
-                }
+        int nodeIndex1 = this.nodesIndex.get(node1);
+        ArrayList<GraphEdge<L>> edgesList = this.matrix.get(nodeIndex1);
+        for(GraphEdge<L> singleEdge : edgesList){
+            if(singleEdge.getNode2().equals(node2)){
+                return singleEdge;
             }
         }
         return null;
@@ -331,7 +331,18 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
 
     @Override
     public GraphEdge<L> getEdgeAtNodeIndexes(int i, int j) {
-        // TODO implementare
+        if((i >= this.nodesIndex.size())||(j >= this.nodesIndex.size())){
+            throw new IndexOutOfBoundsException("Indice fuori dai valori");
+        }
+        GraphNode<L> node1 = getNodeAtIndex(i);
+        GraphNode<L> node2 = getNodeAtIndex(j);
+        int nodeIndex1 = this.nodesIndex.get(node1);
+        ArrayList<GraphEdge<L>> edgesList = this.matrix.get(nodeIndex1);
+        for(GraphEdge<L> singleEdge : edgesList){
+            if(singleEdge.getNode2().equals(node2)){
+                return singleEdge;
+            }
+        }
         return null;
     }
 
