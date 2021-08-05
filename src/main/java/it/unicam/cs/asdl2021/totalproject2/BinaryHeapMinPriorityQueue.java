@@ -183,8 +183,19 @@ public class BinaryHeapMinPriorityQueue {
      */
     public void decreasePriority(PriorityQueueElement element,
             double newPriority) {
-        // TODO implementare
-
+        if(!this.heap.contains(element)){
+            throw new NoSuchElementException("L'elemento passato non è presente nella coda di priorità");
+        }
+        if(element.getPriority() < newPriority){
+            throw new IllegalArgumentException(("La nuova priorità è maggiore di quella attuale"));
+        }
+        for(PriorityQueueElement priorityElement : this.heap){
+            if(priorityElement.getPriority() == element.getPriority()){
+                priorityElement.setPriority(newPriority);
+                shiftUp(priorityElement);
+                break;
+            }
+        }
     }
 
     /**
@@ -193,7 +204,7 @@ public class BinaryHeapMinPriorityQueue {
      * @return true if this priority queue is empty, false otherwise
      */
     public boolean isEmpty() {
-        if(heap.size() == 0) {
+        if(this.heap.size() == 0) {
             return true;
         }
         return false;
@@ -208,7 +219,7 @@ public class BinaryHeapMinPriorityQueue {
      */
     public int size() {
         int cont = 0;
-        for(PriorityQueueElement element : heap){
+        for(PriorityQueueElement element : this.heap){
             cont++;
         }
         return cont;
