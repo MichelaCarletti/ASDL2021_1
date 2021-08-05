@@ -403,6 +403,12 @@ public abstract class Graph<L> {
      *                                      se il nodo passato è nullo
      */
     public int getDegreeOf(GraphNode<L> node) {
+        if(node == null){
+            throw new NullPointerException("Il nodo passato è nullo");
+        }
+        if(!this.containsNode(node)){
+            throw new IllegalArgumentException("Il nodo passato non esiste nel grafo");
+        }
         if (!this.isDirected())
             return this.getEdgesOf(node).size();
         else

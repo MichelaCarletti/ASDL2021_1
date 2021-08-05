@@ -69,7 +69,7 @@ public class BinaryHeapMinPriorityQueue {
     private void shiftUp(PriorityQueueElement element){
         while (element.getHandle() > 0 &&
                 parent(element).getPriority() > element.getPriority()){
-            swap(parent(element), element);
+            swap(parent(element), element);             //Inverte la posizione degli elementi
         }
     }
 
@@ -189,13 +189,8 @@ public class BinaryHeapMinPriorityQueue {
         if(element.getPriority() < newPriority){
             throw new IllegalArgumentException(("La nuova priorità è maggiore di quella attuale"));
         }
-        for(PriorityQueueElement priorityElement : this.heap){
-            if(priorityElement.getPriority() == element.getPriority()){
-                priorityElement.setPriority(newPriority);
-                shiftUp(priorityElement);
-                break;
-            }
-        }
+        element.setPriority(newPriority);
+        shiftUp(element);
     }
 
     /**
@@ -204,12 +199,7 @@ public class BinaryHeapMinPriorityQueue {
      * @return true if this priority queue is empty, false otherwise
      */
     public boolean isEmpty() {
-        if(this.heap.size() == 0) {
-            return true;
-        }
-        return false;
-
-        //TODO implementare
+        return this.heap.isEmpty();
     }
 
     /**
@@ -218,12 +208,7 @@ public class BinaryHeapMinPriorityQueue {
      * @return the number of elements currently in this queue.
      */
     public int size() {
-        int cont = 0;
-        for(PriorityQueueElement element : this.heap){
-            cont++;
-        }
-        return cont;
-        //TODO implementare
+        return this.heap.size();
     }
 
     /**
@@ -233,7 +218,4 @@ public class BinaryHeapMinPriorityQueue {
     public void clear() {
         this.heap.clear();
     }
-
-    // TODO inserire eventuali altri metodi privati per scopi di implementazione
-
 }

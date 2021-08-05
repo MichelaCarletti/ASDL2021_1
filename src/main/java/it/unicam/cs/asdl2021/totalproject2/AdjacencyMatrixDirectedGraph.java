@@ -72,7 +72,11 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
     public int edgeCount() {
         int edges = 0;
         for(ArrayList<GraphEdge<L>> list : matrix){
-            edges = edges + list.size();
+            for(GraphEdge<L> edge : list) {
+                if(edge != null) {
+                    edges++;
+                }
+            }
         }
         return edges;
     }
@@ -296,17 +300,17 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
 
     @Override
     public Set<GraphEdge<L>> getIngoingEdgesOf(GraphNode<L> node) {
-        if(!nodesIndex.containsKey(node)){
-            throw  new IllegalArgumentException("Il nodo passato non esiste nel grafo");
-        }
         if(node == null){
             throw new NullPointerException("Il nodo passato è nullo");
         }
+        if(!nodesIndex.containsKey(node)){
+            throw  new IllegalArgumentException("Il nodo passato non esiste nel grafo");
+        }
         Set<GraphEdge<L>> edges = new HashSet<>();
         int nodeIndex1 = this.nodesIndex.get(node);
-        ArrayList<GraphEdge<L>> edgesList = this.matrix.get(nodeIndex1);
-        for(GraphEdge<L> singleEdge : edgesList){
-            if((singleEdge != null)&&(singleEdge.getNode2().equals(node))){
+        for(ArrayList<GraphEdge<L>> edgesList : this.matrix){
+            GraphEdge<L> singleEdge = edgesList.get(nodeIndex1);  //Prendo la colonna nodeIndex1 della mtrice di adicenza
+            if(singleEdge != null){
                 edges.add(singleEdge);
             }
         }
