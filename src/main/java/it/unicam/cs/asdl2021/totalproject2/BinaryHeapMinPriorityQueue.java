@@ -32,7 +32,6 @@ public class BinaryHeapMinPriorityQueue {
      */
     private ArrayList<PriorityQueueElement> heap;
 
-    // TODO implementare: inserire eventuali altre variabili istanza
 
     /**
      * Crea una coda con priorità vuota.

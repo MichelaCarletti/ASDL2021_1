@@ -89,7 +89,7 @@ public class DijkstraShortestPathComputer<L>
     public void computeShortestPathsFrom(GraphNode<L> sourceNode) {
         Set<GraphNode<L>> shortestPathTree = new HashSet<>();
         Set<GraphNode<L>> nodes = new HashSet<>();
-        for(GraphNode<L> node : this.graph.getNodes()){
+        for(GraphNode<L> node : this.getGraph().getNodes()){
             node.setFloatingPointDistance(Double.POSITIVE_INFINITY);
             nodes.add(node);
         }
@@ -97,8 +97,8 @@ public class DijkstraShortestPathComputer<L>
         while(!nodes.isEmpty()){
             GraphNode<L> minNode = extractMin(nodes);               //Estraggo il nodo con distanza minima
             shortestPathTree.add(minNode);
-            for(GraphNode<L> adjacentNode : graph.getAdjacentNodesOf(minNode)){
-                GraphEdge<L> edge = graph.getEdge(minNode,adjacentNode);
+            for(GraphNode<L> adjacentNode : getGraph().getAdjacentNodesOf(minNode)){
+                GraphEdge<L> edge = getGraph().getEdge(minNode,adjacentNode);
                 if(edge != null) {
                     double distance = minNode.getFloatingPointDistance() + edge.getWeight();
                     if (adjacentNode.getFloatingPointDistance() > distance) {
@@ -131,7 +131,36 @@ public class DijkstraShortestPathComputer<L>
 
     @Override
     public List<GraphEdge<L>> getShortestPathTo(GraphNode<L> targetNode) {
-        // TODO implementare
-        return null;
+        if(targetNode == null){
+            throw new NullPointerException("Il nodo passato è nullo");
+        }
+        if(!this.getGraph().containsNode(targetNode)){
+            throw new IllegalArgumentException("Il nodo passato non esiste nel grafo");
+        }
+        if(!isComputed()){
+            throw new IllegalStateException("Non è mai stato eseguito il calcolo del cammino minimo");
+        }
+        Set<GraphNode<L>> shortestPathTree = new HashSet<>();
+        Set<GraphNode<L>> nodes = new HashSet<>();
+        for(GraphNode<L> node : this.getGraph().getNodes()){
+            node.setFloatingPointDistance(Double.POSITIVE_INFINITY);
+            nodes.add(node);
+        }
+        GraphNode<L> sourceNode = this.getGraph().getNodeAtIndex(0);
+        while(nodes.contains(targetNode)){
+            GraphNode<L> minNode = extractMin(nodes);               //Estraggo il nodo con distanza minima
+            shortestPathTree.add(minNode);
+            for(GraphNode<L> adjacentNode : getGraph().getAdjacentNodesOf(minNode)){
+                GraphEdge<L> edge = getGraph().getEdge(minNode,adjacentNode);
+                if(edge != null) {
+                    double distance = minNode.getFloatingPointDistance() + edge.getWeight();
+                    if (adjacentNode.getFloatingPointDistance() > distance) {
+                        adjacentNode.setFloatingPointDistance(distance);
+                    }
+                }
+            }
+        }
+        this.shortestPathTree = shortestPathTree;
+        this.lastSource = sourceNode;
     }
 }

@@ -101,7 +101,8 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
     @Override
     public boolean addNode(GraphNode<L> node) {
         if(node == null){
-            throw new NullPointerException("Non si può aggiungere un nodo nullo");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Non si può aggiungere un nodo nullo");
+            // Throw interrompe l'esecuzione del programma
         }
         if(this.containsNode(node)){
             return false;
@@ -127,7 +128,8 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
     @Override
     public boolean containsNode(GraphNode<L> node) {
         if(node == null){
-            throw new NullPointerException("Non si può cercare un nodo nullo");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Non si può cercare un nodo nullo");
+            // Throw interrompe l'esecuzione del programma
         }
         for(GraphNode<L> nodes : this.nodesIndex.keySet()){
             if(nodes.equals(node)){
@@ -140,7 +142,8 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
     @Override
     public GraphNode<L> getNodeOf(L label) {
         if(label == null){
-            throw new NullPointerException("Non si può cercare un nodo con etichetta nulla");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Non si può cercare un nodo con etichetta nulla");
+            // Throw interrompe l'esecuzione del programma
         }
         for(GraphNode<L> node : this.nodesIndex.keySet()){
             if(node.getLabel().equals(label)){
@@ -153,7 +156,8 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
     @Override
     public int getNodeIndexOf(L label) {
         if(label == null){
-            throw new NullPointerException("Non si può cercare un nodo con etichetta nulla");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Non si può cercare un nodo con etichetta nulla");
+            // Throw interrompe l'esecuzione del programma
         }
         int i = 0;
         for(GraphNode<L> node : this.nodesIndex.keySet()){
@@ -309,7 +313,8 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
         Set<GraphEdge<L>> edges = new HashSet<>();
         int nodeIndex1 = this.nodesIndex.get(node);
         for(ArrayList<GraphEdge<L>> edgesList : this.matrix){
-            GraphEdge<L> singleEdge = edgesList.get(nodeIndex1);  //Prendo la colonna nodeIndex1 della mtrice di adicenza
+            GraphEdge<L> singleEdge = edgesList.get(nodeIndex1);
+            //Prendo la colonna nodeIndex1 della mtrice di adiacenza
             if(singleEdge != null){
                 edges.add(singleEdge);
             }

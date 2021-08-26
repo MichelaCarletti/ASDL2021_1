@@ -2,7 +2,10 @@ package it.unicam.cs.asdl2021.totalproject2;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.PriorityQueue;
 
 /**
  * 
@@ -11,21 +14,44 @@ import org.junit.jupiter.api.Test;
  */
 class BinaryHeapMinPriorityQueueTest {
 
-    // TODO implementare tutti i test non ancora implementati
+    PriorityQueueElement element = new PriorityQueueElement() {
+        @Override
+        public double getPriority() {
+            return 0;
+        }
+
+        @Override
+        public void setPriority(double newPriority) {
+
+        }
+
+        @Override
+        public int getHandle() {
+            return 0;
+        }
+
+        @Override
+        public void setHandle(int newHandle) {
+
+        }
+    };
 
     @Test
     final void testBinaryHeapMinPriorityQueue() {
-        fail("Not yet implemented"); // TODO
+        BinaryHeapMinPriorityQueue heap = new BinaryHeapMinPriorityQueue();
+        Assertions.assertTrue(heap.isEmpty());
     }
 
     @Test
     final void testInsert() {
-        fail("Not yet implemented"); // TODO
+        BinaryHeapMinPriorityQueue heap = new BinaryHeapMinPriorityQueue();
+        heap.insert(element);
+        Assertions.assertFalse(heap.isEmpty());
     }
 
     @Test
     final void testMinimum() {
-        fail("Not yet implemented"); // TODO
+        fail();
     }
 
     @Test

@@ -58,7 +58,20 @@ public class FloydWarshallAllPairsShortestPathComputer<L> {
      *                                      peso è {@code Double.NaN}
      */
     public FloydWarshallAllPairsShortestPathComputer(Graph<L> g) {
-        // TODO implementare
+        if(g == null){
+            throw new NullPointerException("Il grafo passato è nullo");
+        }
+        if(g.isEmpty()){
+            throw new IllegalArgumentException("Il grafo passato è vuoto");
+        }
+        if(!g.isDirected()){
+            throw new IllegalArgumentException("Il grafo passato non è orientato");
+        }
+        for(GraphEdge<L> edge : g.getEdges()){
+            if(edge.getWeight() == Double.NaN){
+                throw new IllegalArgumentException(("Il grafo passato non è pesato"));
+            }
+        }
     }
 
     /**

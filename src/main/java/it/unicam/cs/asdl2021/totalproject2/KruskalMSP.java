@@ -24,6 +24,7 @@ public class KruskalMSP<L> {
      */
     private ArrayList<HashSet<GraphNode<L>>> disjointSets;
 
+
     // TODO implementare: inserire eventuali altre variabili istanza
 
     /**
@@ -50,10 +51,52 @@ public class KruskalMSP<L> {
      *        con pesi negativi
      */
     public Set<GraphEdge<L>> computeMSP(Graph<L> g) {
-        // TODO implementare
+        if(g == null){
+            throw new NullPointerException("Il grafo passato è nullo");
+        }
+        if(!g.isDirected()){
+            throw new IllegalArgumentException(("Il grafo passato non è orientato"));
+        }
+        for(GraphEdge<L> edge : g.getEdges()){
+            if(edge.getWeight() == Double.NaN){
+                throw new IllegalArgumentException(("Il grafo passato non è pesato"));
+            }
+            if(edge.getWeight() < 0){
+                throw new IllegalArgumentException(("Il grafo passato ha almeno un peso negativo"));
+            }
+        }
+        Set<GraphEdge<L>> tidyEdges = g.getEdges();
+        for(GraphNode<L> node : g.getNodes()){
+            makeSet(node);
+        }
+        edgesInsertionSort(tidyEdges);
         return null;
     }
 
+    private void makeSet(GraphNode<L> noe){
+        // TODO Cosa fa makeSet?
+    }
+
+    private void edgesInsertionSort(Set<GraphEdge> tidyEdges){
+        int length = tidyEdges.size();
+        Double edgesWeight[] = new Double[length];
+        int i = 0;
+        for(GraphEdge<L> edge : tidyEdges){
+            edgesWeight[i] = edge.getWeight();
+            i ++;
+        }
+        i = 0;
+        Double key = 0.0;
+        for(int j = 0; j < length; j ++){
+            key = edgesWeight[j];
+            i = j - 1;
+            while((i > 0) && (edgesWeight[i] > key)){
+                edgesWeight[i + 1] = edgesWeight[i];
+                i = i -1;
+            }
+            edgesWeight[i + 1] = key;
+        }
+    }
     // TODO implementare: inserire eventuali metodi privati per fini di
     // implementazione
 }
