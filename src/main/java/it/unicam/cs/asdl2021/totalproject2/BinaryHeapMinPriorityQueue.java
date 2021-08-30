@@ -63,6 +63,7 @@ public class BinaryHeapMinPriorityQueue {
     private void appendElement(PriorityQueueElement element){
         element.setHandle(heap.size());             //Aggiorno l'handle dell'elemento
         this.heap.add(element);
+        System.out.println(element.getPriority());
     }
 
     private void shiftUp(PriorityQueueElement element){

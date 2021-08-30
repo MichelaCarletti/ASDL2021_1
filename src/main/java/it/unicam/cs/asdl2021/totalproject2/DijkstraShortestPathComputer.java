@@ -1,8 +1,6 @@
 package it.unicam.cs.asdl2021.totalproject2;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Gli oggetti di questa classe sono calcolatori di cammini minimi con sorgente
@@ -26,7 +24,7 @@ public class DijkstraShortestPathComputer<L>
 
     Graph<L> graph;
     GraphNode<L> lastSource;
-    Set<GraphNode<L>> shortestPathTree;
+    HashMap<GraphNode<L>,GraphNode<L>> parentsMap;
 
     /**
      * Crea un calcolatore di cammini minimi a sorgente singola per un grafo
@@ -70,6 +68,7 @@ public class DijkstraShortestPathComputer<L>
             }
         }
         this.graph = graph;
+        parentsMap = new HashMap<>();
     }
 
     private GraphNode<L> extractMin(Set<GraphNode<L>> nodes){
@@ -87,7 +86,6 @@ public class DijkstraShortestPathComputer<L>
 
     @Override
     public void computeShortestPathsFrom(GraphNode<L> sourceNode) {
-        Set<GraphNode<L>> shortestPathTree = new HashSet<>();
         Set<GraphNode<L>> nodes = new HashSet<>();
         for(GraphNode<L> node : this.getGraph().getNodes()){
             node.setFloatingPointDistance(Double.POSITIVE_INFINITY);
@@ -96,18 +94,17 @@ public class DijkstraShortestPathComputer<L>
         sourceNode.setFloatingPointDistance(0);
         while(!nodes.isEmpty()){
             GraphNode<L> minNode = extractMin(nodes);               //Estraggo il nodo con distanza minima
-            shortestPathTree.add(minNode);
             for(GraphNode<L> adjacentNode : getGraph().getAdjacentNodesOf(minNode)){
                 GraphEdge<L> edge = getGraph().getEdge(minNode,adjacentNode);
                 if(edge != null) {
                     double distance = minNode.getFloatingPointDistance() + edge.getWeight();
                     if (adjacentNode.getFloatingPointDistance() > distance) {
                         adjacentNode.setFloatingPointDistance(distance);
+                        parentsMap.put(adjacentNode,minNode);
                     }
                 }
             }
         }
-        this.shortestPathTree = shortestPathTree;
         this.lastSource = sourceNode;
     }
 
@@ -140,27 +137,20 @@ public class DijkstraShortestPathComputer<L>
         if(!isComputed()){
             throw new IllegalStateException("Non è mai stato eseguito il calcolo del cammino minimo");
         }
-        Set<GraphNode<L>> shortestPathTree = new HashSet<>();
-        Set<GraphNode<L>> nodes = new HashSet<>();
-        for(GraphNode<L> node : this.getGraph().getNodes()){
-            node.setFloatingPointDistance(Double.POSITIVE_INFINITY);
-            nodes.add(node);
-        }
-        GraphNode<L> sourceNode = this.getGraph().getNodeAtIndex(0);
-        while(nodes.contains(targetNode)){
-            GraphNode<L> minNode = extractMin(nodes);               //Estraggo il nodo con distanza minima
-            shortestPathTree.add(minNode);
-            for(GraphNode<L> adjacentNode : getGraph().getAdjacentNodesOf(minNode)){
-                GraphEdge<L> edge = getGraph().getEdge(minNode,adjacentNode);
-                if(edge != null) {
-                    double distance = minNode.getFloatingPointDistance() + edge.getWeight();
-                    if (adjacentNode.getFloatingPointDistance() > distance) {
-                        adjacentNode.setFloatingPointDistance(distance);
-                    }
-                }
+        List<GraphEdge<L>> edges = new ArrayList<>();
+        GraphNode<L> child = targetNode;
+        while(child != getLastSource()){
+            //Percorso all'indietro sulla lista che associa nodi padre e nodi figli del percorso minimo
+            GraphNode<L> parent = parentsMap.get(child);
+            if(parent != null){
+                edges.add(graph.getEdge(parent,child));
+            }
+            else{
+                //Se parent è null vuol dire che non c'è l'arco, quindi il percorso non esiste
+                return null;
             }
         }
-        this.shortestPathTree = shortestPathTree;
-        this.lastSource = sourceNode;
+        Collections.reverse(edges);
+        return edges;
     }
 }

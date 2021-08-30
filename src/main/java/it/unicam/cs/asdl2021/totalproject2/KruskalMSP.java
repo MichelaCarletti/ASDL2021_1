@@ -65,38 +65,28 @@ public class KruskalMSP<L> {
                 throw new IllegalArgumentException(("Il grafo passato ha almeno un peso negativo"));
             }
         }
-        Set<GraphEdge<L>> tidyEdges = g.getEdges();
         for(GraphNode<L> node : g.getNodes()){
-            makeSet(node);
+            //Creare V alberi, uno per ogni vertice
         }
-        edgesInsertionSort(tidyEdges);
+        Set<GraphEdge<L>> orderedEdges = orderEdges(g.getEdges());
+        for(GraphEdge<L> edge : g.getEdges()){
+            //Verifica se i due nodi dell'arco appartengono allo stesso albero
+        }
         return null;
     }
 
-    private void makeSet(GraphNode<L> noe){
-        // TODO Cosa fa makeSet?
-    }
-
-    private void edgesInsertionSort(Set<GraphEdge> tidyEdges){
-        int length = tidyEdges.size();
-        Double edgesWeight[] = new Double[length];
-        int i = 0;
-        for(GraphEdge<L> edge : tidyEdges){
-            edgesWeight[i] = edge.getWeight();
-            i ++;
-        }
-        i = 0;
-        Double key = 0.0;
-        for(int j = 0; j < length; j ++){
-            key = edgesWeight[j];
-            i = j - 1;
-            while((i > 0) && (edgesWeight[i] > key)){
-                edgesWeight[i + 1] = edgesWeight[i];
-                i = i -1;
+    private Set<GraphEdge<L>> orderEdges(Set<GraphEdge<L>> edges){
+        GraphEdge<L> key;
+        int j;
+        for(int i = 0; i < edges.size(); i ++){
+            key = edges[i];
+            j = i -1;
+            while((j > 0)&&(edges[j] > key)){
+                edges[j + 1] = edges[j];
+                j = j -1;
             }
-            edgesWeight[i + 1] = key;
+            edges[i + 1] = key;
         }
+        return edges;
     }
-    // TODO implementare: inserire eventuali metodi privati per fini di
-    // implementazione
 }

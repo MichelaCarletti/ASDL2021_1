@@ -75,7 +75,8 @@ public class MapAdjacentListUndirectedGraph<L> extends Graph<L> {
     @Override
     public int edgeCount() {
         HashSet<GraphEdge<L>> edges = new HashSet<GraphEdge<L>>();
-        //Cicla ogni nodo e inserisce tutti gli archi ad esso collegati all'interno di edges. Il metodo addAll controlla già che non ce ne siano due o più uguali
+        //Cicla ogni nodo e inserisce tutti gli archi ad esso collegati all'interno di edges.
+        //Il metodo addAll controlla già che non ce ne siano due o più uguali
         for(Map.Entry<GraphNode<L>, Set<GraphEdge<L>>> entry : this.adjacentLists.entrySet()){
             edges.addAll(entry.getValue());
         }

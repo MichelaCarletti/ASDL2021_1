@@ -1,8 +1,6 @@
 package it.unicam.cs.asdl2021.totalproject2;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Implementazione dell'algoritmo di Bellman-Ford per il calcolo di cammini
@@ -19,7 +17,7 @@ public class BellmanFordShortestPathComputer<L>
 
     Graph<L> graph;
     GraphNode<L> lastSource;
-    Set<GraphNode<L>> shortestPathTree;
+    HashMap<GraphNode<L>,GraphNode<L>> parentsMap;
 
     /**
      * Crea un calcolatore di cammini minimi a sorgente singola per un grafo
@@ -57,6 +55,7 @@ public class BellmanFordShortestPathComputer<L>
             }
         }
         this.graph = graph;
+        parentsMap = new HashMap<>();
     }
 
     @Override
@@ -68,23 +67,23 @@ public class BellmanFordShortestPathComputer<L>
             nodes.add(node);
         }
         sourceNode.setFloatingPointDistance(0);
-        for(GraphNode<L> graphNode : this.getGraph().getNodes()){
-            for(GraphEdge<L> graphEdge : this.getGraph().getEdges()){
+        for(int i = 0; i < graph.nodeCount(); i ++) {
+            for (GraphEdge<L> graphEdge : this.getGraph().getEdges()) {
                 GraphNode<L> node1 = graphEdge.getNode1();
                 GraphNode<L> node2 = graphEdge.getNode2();
-                if(node2.getFloatingPointDistance() > (node1.getFloatingPointDistance() + graphEdge.getWeight())){
+                if (node2.getFloatingPointDistance() > (node1.getFloatingPointDistance() + graphEdge.getWeight())) {
                     node2.setFloatingPointDistance(node1.getFloatingPointDistance() + graphEdge.getWeight());
-                }
-            }
-            for(GraphEdge<L> graphEdge : this.getGraph().getEdges()){
-                GraphNode<L> node1 = graphEdge.getNode1();
-                GraphNode<L> node2 = graphEdge.getNode2();
-                if(node2.getFloatingPointDistance() > (node1.getFloatingPointDistance() + graphEdge.getWeight())){
-                    throw new IllegalArgumentException("Il grafo contiene un ciclo di peso negativo");
+                    parentsMap.put(node2, node1);
                 }
             }
         }
-        this.shortestPathTree = shortestPathTree;
+        for(GraphEdge<L> graphEdge : this.getGraph().getEdges()){
+            GraphNode<L> node1 = graphEdge.getNode1();
+            GraphNode<L> node2 = graphEdge.getNode2();
+            if(node2.getFloatingPointDistance() > (node1.getFloatingPointDistance() + graphEdge.getWeight())){
+               throw new IllegalArgumentException("Il grafo contiene un ciclo di peso negativo");
+           }
+        }
         this.lastSource = sourceNode;
     }
 
@@ -105,7 +104,29 @@ public class BellmanFordShortestPathComputer<L>
 
     @Override
     public List<GraphEdge<L>> getShortestPathTo(GraphNode<L> targetNode) {
-        // TODO implementare
-        return null;
+        if(targetNode == null){
+            throw new NullPointerException("Il nodo passato è nullo");
+        }
+        if(!this.getGraph().containsNode(targetNode)){
+            throw new IllegalArgumentException("Il nodo passato non esiste nel grafo");
+        }
+        if(!isComputed()){
+            throw new IllegalStateException("Non è mai stato eseguito il calcolo del cammino minimo");
+        }
+        List<GraphEdge<L>> edges = new ArrayList<>();
+        GraphNode<L> child = targetNode;
+        while(child != getLastSource()){
+            //Percorso all'indietro sulla lista che associa nodi padre e nodi figli del percorso minimo
+            GraphNode<L> parent = parentsMap.get(child);
+            if(parent != null){
+                edges.add(graph.getEdge(parent,child));
+            }
+            else{
+                //Se parent è null vuol dire che non c'è l'arco, quindi il percorso non esiste
+                return null;
+            }
+        }
+        Collections.reverse(edges);
+        return edges;
     }
 }

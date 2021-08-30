@@ -314,7 +314,7 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
         int nodeIndex1 = this.nodesIndex.get(node);
         for(ArrayList<GraphEdge<L>> edgesList : this.matrix){
             GraphEdge<L> singleEdge = edgesList.get(nodeIndex1);
-            //Prendo la colonna nodeIndex1 della mtrice di adiacenza
+            //Prendo la colonna nodeIndex1 della matrice di adiacenza
             if(singleEdge != null){
                 edges.add(singleEdge);
             }

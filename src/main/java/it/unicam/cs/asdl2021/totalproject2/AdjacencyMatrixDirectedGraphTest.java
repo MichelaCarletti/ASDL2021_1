@@ -585,8 +585,9 @@ class AdjacencyMatrixDirectedGraphTest {
 
     @Test
     final void testAdjacencyMatrixDirectedGraph() {
-        fail();
-        //TODO cosa testo?
+        AdjacencyMatrixDirectedGraph graph = new AdjacencyMatrixDirectedGraph();
+        Assertions.assertTrue(graph.matrix.isEmpty());
+        Assertions.assertTrue(graph.nodesIndex.isEmpty());
     }
 
     @Test
