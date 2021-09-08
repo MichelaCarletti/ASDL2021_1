@@ -60,7 +60,6 @@ public class BellmanFordShortestPathComputer<L>
 
     @Override
     public void computeShortestPathsFrom(GraphNode<L> sourceNode) {
-        Set<GraphNode<L>> shortestPathTree = new HashSet<>();
         Set<GraphNode<L>> nodes = new HashSet<>();
         for(GraphNode<L> node : this.getGraph().getNodes()){
             node.setFloatingPointDistance(Double.POSITIVE_INFINITY);

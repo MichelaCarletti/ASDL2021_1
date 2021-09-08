@@ -1,5 +1,6 @@
 package it.unicam.cs.asdl2021.totalproject2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -76,34 +77,23 @@ public class PrimMSP<L> {
                 throw new IllegalArgumentException(("Il grafo passato ha almeno un peso negativo"));
             }
         }
+        ArrayList<GraphNode<L>> visitedNodes = new ArrayList<>();
         for(GraphNode<L> node : g.getNodes()){
-            node.setFloatingPointDistance(Double.POSITIVE_INFINITY);
+            node.setPriority(Double.POSITIVE_INFINITY);
+            this.queue.insert(node);
             parentsMap.put(null, node);
         }
-        Set<GraphNode<L>> nodes = g.getNodes();
-        while(!nodes.isEmpty()){
-            GraphNode<L> minNode = extractMin(nodes);
+        this.queue.minimum().setPriority(0);
+        while(!this.queue.isEmpty()){
+            GraphNode<L> minNode = (GraphNode<L>)this.queue.extractMinimum();
+            visitedNodes.add(minNode);
             for(GraphNode<L> node : g.getNodes()){
                 GraphEdge<L> edge = g.getEdge(minNode, node);
-                if((nodes.contains(node)&&(edge != null)&&(edge.getWeight() < node.getFloatingPointDistance()))){
-                    node.setFloatingPointDistance(edge.getWeight());
+                if(((!visitedNodes.contains(node))&&(edge != null)&&(edge.getWeight() < node.getPriority()))){
+                    queue.decreasePriority(node,edge.getWeight());
                     parentsMap.put(minNode, node);
                 }
             }
         }
     }
-
-    private GraphNode<L> extractMin(Set<GraphNode<L>> nodes){
-        GraphNode<L> minNode = null;
-        double minDistance = Double.POSITIVE_INFINITY;
-        for(GraphNode<L> node : nodes){
-            if(node.getFloatingPointDistance() < minDistance){
-                minDistance = node.getFloatingPointDistance();
-                minNode = node;
-            }
-        }
-        nodes.remove(minNode);
-        return minNode;
-    }
-
 }

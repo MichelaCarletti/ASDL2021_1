@@ -80,7 +80,7 @@ public class DijkstraShortestPathComputer<L>
         GraphNode<L> minNode = null;
         double minDistance = Double.POSITIVE_INFINITY;
         for(GraphNode<L> node : nodes){
-            if(node.getFloatingPointDistance() < minDistance){
+            if(node.getFloatingPointDistance() <= minDistance){
                 minDistance = node.getFloatingPointDistance();
                 minNode = node;
             }
@@ -147,11 +147,12 @@ public class DijkstraShortestPathComputer<L>
         }
         List<GraphEdge<L>> edges = new ArrayList<>();
         GraphNode<L> child = localTargetNode;
-        while(child != getLastSource()){
+        while(!child.equals(getLastSource())){
             //Percorso all'indietro sulla lista che associa nodi padre e nodi figli del percorso minimo
             GraphNode<L> parent = parentsMap.get(child);
             if(parent != null){
                 edges.add(graph.getEdge(parent,child));
+                child = parent;
             }
             else{
                 //Se parent è null vuol dire che non c'è l'arco, quindi il percorso non esiste
