@@ -106,7 +106,8 @@ public class MapAdjacentListUndirectedGraph<L> extends Graph<L> {
         //Scorrere la lista dei nodi per controllare se node è già presente nella lista.
         //Eccezione da gestire se il nodo passato è null
         if(node == null){
-            throw new NullPointerException("Il nodo passato è nullo");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Il nodo passato è nullo");
+            // Throw interrompe l'esecuzione del programma
         }
         if(this.containsNode(node)){
             return false;
@@ -114,30 +115,34 @@ public class MapAdjacentListUndirectedGraph<L> extends Graph<L> {
         HashSet<GraphEdge<L>> edges = new HashSet<GraphEdge<L>>();
         this.adjacentLists.put(node,edges);
         return true;
-        //TODO metodo shift up o shift down
     }
 
     @Override
     public boolean removeNode(GraphNode<L> node) {
         if(node == null){
-            throw new NullPointerException("Non si può eliminare un nodo nullo");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Non si può eliminare un nodo nullo");
+            // Throw interrompe l'esecuzione del programma
         }
-        return (this.adjacentLists.remove(node) != null);     // Ritorna il valore associato alla chiave o null se non c'è la chiave. L'eccezione UnsupportedOperationException viene già lanciata dal metodo remove
-        //TODO metodo shift up o shift down
+        return (this.adjacentLists.remove(node) != null);
+        // Ritorna il valore associato alla chiave o null se non c'è la chiave.
+        // L'eccezione UnsupportedOperationException viene già lanciata dal metodo remove
     }
 
     @Override
     public boolean containsNode(GraphNode<L> node) {
         if(node == null){
-            throw new NullPointerException("Il nodo passato è nullo");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Il nodo passato è nullo");
+            // Throw interrompe l'esecuzione del programma
         }
-        return this.adjacentLists.containsKey(node);        // Il metodo containsKey ritorna true se trova quella chiave in adjacentLists. False altrimenti
+        return this.adjacentLists.containsKey(node);
+        // Il metodo containsKey ritorna true se trova quella chiave in adjacentLists. False altrimenti
     }
 
     @Override
     public GraphNode<L> getNodeOf(L label) {
         if(label == null){
-            throw new NullPointerException("L'etichetta passata è nulla");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("L'etichetta passata è nulla");
+            // Throw interrompe l'esecuzione del programma
         }
         for(GraphNode<L> currentNode : this.adjacentLists.keySet()){
             if(label.equals(currentNode.getLabel())) {
@@ -165,19 +170,22 @@ public class MapAdjacentListUndirectedGraph<L> extends Graph<L> {
     @Override
     public Set<GraphNode<L>> getAdjacentNodesOf(GraphNode<L> node) {
         if(node == null){
-            throw new NullPointerException("Non si può eliminare un nodo nullo");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Non si può eliminare un nodo nullo");
+            // Throw interrompe l'esecuzione del programma
         }
         if(!this.containsNode(node)){
             throw new IllegalArgumentException("Il nodo non esiste");
         }
-        Set<GraphEdge<L>> edges = this.adjacentLists.get(node);   // Ritorna la lista di archi associata a quel nodo
+        Set<GraphEdge<L>> edges = this.adjacentLists.get(node);
+        // Ritorna la lista di archi associata a quel nodo
         Set<GraphNode<L>> nodeList = new HashSet<GraphNode<L>>();
         for(GraphEdge<L> currentEdge: edges){
             if((currentEdge.getNode1().equals(node))) {
                 nodeList.add(currentEdge.getNode2());
             }
             else{
-                nodeList.add(currentEdge.getNode1());           // Se c'è un loop il nodo è adiacente a sé stesso
+                nodeList.add(currentEdge.getNode1());
+                // Se c'è un loop il nodo è adiacente a sé stesso
             }
         }
         return nodeList;
@@ -193,7 +201,9 @@ public class MapAdjacentListUndirectedGraph<L> extends Graph<L> {
     public Set<GraphEdge<L>> getEdges() {
         Set<GraphEdge<L>> edges = new HashSet<GraphEdge<L>>();
         for(Set<GraphEdge<L>> nodeEdges : this.adjacentLists.values()){
-            edges.addAll(nodeEdges);                // addAll aggiunge edge se e solo se edge non è già presente nella lista di archi. Prende tutti gli elementi di nodeEdges e li aggiunge ad edges
+            edges.addAll(nodeEdges);
+            // addAll aggiunge edge se e solo se edge non è già presente nella lista di archi.
+            // Prende tutti gli elementi di nodeEdges e li aggiunge ad edges
         }
         return edges;
     }
@@ -201,7 +211,8 @@ public class MapAdjacentListUndirectedGraph<L> extends Graph<L> {
     @Override
     public boolean addEdge(GraphEdge<L> edge) {
         if(edge == null){
-            throw new NullPointerException("Non si può aggiungere un arco nullo");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Non si può aggiungere un arco nullo");
+            // Throw interrompe l'esecuzione del programma
         }
         if(!this.containsNode(edge.getNode1())||(!this.containsNode(edge.getNode2()))){
             throw new IllegalArgumentException("Almeno uno dei due nodi collegati all'arco non esiste");
@@ -222,7 +233,8 @@ public class MapAdjacentListUndirectedGraph<L> extends Graph<L> {
             throw new IllegalArgumentException("Almeno uno dei due nodi collegati all'arco non esiste");
         }
         if(edge == null){
-            throw new NullPointerException("Non si può aggiungere un arco nullo");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Non si può aggiungere un arco nullo");
+            // Throw interrompe l'esecuzione del programma
         }
         boolean node1Removed = this.getEdgesOf(edge.getNode1()).remove(edge);
         boolean node2Removed = this.getEdgesOf(edge.getNode2()).remove(edge);
@@ -232,7 +244,8 @@ public class MapAdjacentListUndirectedGraph<L> extends Graph<L> {
     @Override
     public boolean containsEdge(GraphEdge<L> edge) {
         if(edge == null){
-            throw new NullPointerException("Non si può aggiungere un arco nullo");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Non si può aggiungere un arco nullo");
+            // Throw interrompe l'esecuzione del programma
         }
         if(!this.containsNode(edge.getNode1())||(!this.containsNode(edge.getNode2()))){
             throw new IllegalArgumentException("Almeno uno dei due nodi collegati all'arco non esiste");
@@ -251,7 +264,8 @@ public class MapAdjacentListUndirectedGraph<L> extends Graph<L> {
             throw new IllegalArgumentException("Il nodo passato non esiste nel grafo");
         }
         if(node == null){
-            throw new NullPointerException("Il nodo passato è nullo");  // Throw interrompe l'esecuzione del programma
+            throw new NullPointerException("Il nodo passato è nullo");
+            // Throw interrompe l'esecuzione del programma
         }
         return this.adjacentLists.get(node);
     }

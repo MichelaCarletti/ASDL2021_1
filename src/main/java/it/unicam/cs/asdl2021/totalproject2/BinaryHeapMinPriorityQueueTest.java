@@ -63,14 +63,16 @@ class BinaryHeapMinPriorityQueueTest {
     final void testMinimum() {
         BinaryHeapMinPriorityQueue heap = new BinaryHeapMinPriorityQueue();
         GraphNode<Integer> node1 = new GraphNode<>(0);
-        node1.setPriority(6);
         GraphNode<Integer> node2 = new GraphNode<>(1);
         GraphNode<Integer> node3 = new GraphNode<>(6);
+        node1.setPriority(6);
+        node2.setPriority(2);
+        node3.setPriority(0);
         heap.insert(node2);
         heap.insert(node3);
         heap.insert(node1);
         Assertions.assertEquals(node3,heap.minimum());
-        /*heap.clear();
+        heap.clear();
         boolean noSuchException = false;
         try{
             heap.minimum();
@@ -78,7 +80,7 @@ class BinaryHeapMinPriorityQueueTest {
         catch(NoSuchElementException e){
             noSuchException = true;
         }
-        Assertions.assertTrue(noSuchException);*/
+        Assertions.assertTrue(noSuchException);
     }
 
     @Test
@@ -87,11 +89,15 @@ class BinaryHeapMinPriorityQueueTest {
         GraphNode<Integer> node1 = new GraphNode<>(4);
         GraphNode<Integer> node2 = new GraphNode<>(1);
         GraphNode<Integer> node3 = new GraphNode<>(6);
+        node1.setPriority(3);
+        node2.setPriority(0);
+        node3.setPriority(9);
         heap.insert(node1);
         heap.insert(node2);
         heap.insert(node3);
-        Assertions.assertEquals(node3,heap.extractMinimum());
-        /*heap.clear();
+        Assertions.assertEquals(node2,heap.extractMinimum());
+        Assertions.assertEquals(node1,heap.extractMinimum());
+        heap.clear();
         boolean noSuchException = false;
         try{
             heap.extractMinimum();
@@ -99,7 +105,7 @@ class BinaryHeapMinPriorityQueueTest {
         catch(NoSuchElementException e){
             noSuchException = true;
         }
-        Assertions.assertTrue(noSuchException);*/
+        Assertions.assertTrue(noSuchException);
     }
 
     @Test
@@ -112,9 +118,13 @@ class BinaryHeapMinPriorityQueueTest {
         heap.insert(node1);
         heap.insert(node2);
         heap.insert(node3);
+        node1.setPriority(3);
+        node2.setPriority(10);
+        node3.setPriority(9);
+        Assertions.assertEquals(node1, heap.minimum());
         heap.decreasePriority(node3, 2);
-        Assertions.assertEquals(node2, heap.minimum());
-        /*boolean noSuchException = false;
+        Assertions.assertEquals(node3, heap.minimum());
+        boolean noSuchException = false;
         boolean illegalException = false;
         try{
             heap.decreasePriority(node4, 0);
@@ -129,7 +139,7 @@ class BinaryHeapMinPriorityQueueTest {
             illegalException = true;
         }
         Assertions.assertTrue(noSuchException);
-        Assertions.assertTrue(illegalException);*/
+        Assertions.assertTrue(illegalException);
     }
 
     @Test

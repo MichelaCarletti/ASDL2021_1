@@ -63,7 +63,6 @@ public class BinaryHeapMinPriorityQueue {
     private void appendElement(PriorityQueueElement element){
         element.setHandle(heap.size());             //Aggiorno l'handle dell'elemento
         this.heap.add(element);
-        System.out.println(element.getPriority());
     }
 
     private void shiftUp(PriorityQueueElement element){
@@ -76,11 +75,11 @@ public class BinaryHeapMinPriorityQueue {
     private void shiftDown(PriorityQueueElement element){
         PriorityQueueElement min = element;
         PriorityQueueElement left = leftChild(element);
-        if (min.getPriority() > left.getPriority()) {
+        if ((left != null)&&(min.getPriority() > left.getPriority())) {
             min = left;
         }
         PriorityQueueElement right = rightChild(element);
-        if (min.getPriority() > right.getPriority()) {
+        if ((right != null)&&(min.getPriority() > right.getPriority())) {
             min = right;
         }
         if (element != min) {
@@ -113,11 +112,23 @@ public class BinaryHeapMinPriorityQueue {
     }
 
     private PriorityQueueElement leftChild(PriorityQueueElement element){
-        return (this.heap.get(leftChild(element.getHandle())));
+        int leftChildHandle = leftChild(element.getHandle());
+        if(leftChildHandle < this.heap.size()) {
+            return (this.heap.get(leftChildHandle));
+        }
+        else{
+            return null;
+        }
     }
 
     private PriorityQueueElement rightChild(PriorityQueueElement element){
-        return (this.heap.get(rightChild(element.getHandle())));
+        int rightChildHandle = rightChild(element.getHandle());
+        if(rightChildHandle < this.heap.size()) {
+            return (this.heap.get(rightChildHandle));
+        }
+        else{
+            return null;
+        }
     }
 
     /**
@@ -157,6 +168,9 @@ public class BinaryHeapMinPriorityQueue {
             swap(min, leaf);
             shiftDown(leaf);
             this.heap.remove(min.getHandle());
+            for(PriorityQueueElement element : this.heap){
+                element.setHandle(element.getHandle() - 1);
+            }
             return min;
         }
     }

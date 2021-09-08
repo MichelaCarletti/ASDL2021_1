@@ -71,6 +71,11 @@ public class DijkstraShortestPathComputer<L>
         parentsMap = new HashMap<>();
     }
 
+    private GraphNode<L> getNodeFrom(GraphNode<L> node){
+        int index = graph.getNodeIndexOf(node.getLabel());
+        return graph.getNodeAtIndex(index);
+    }
+
     private GraphNode<L> extractMin(Set<GraphNode<L>> nodes){
         GraphNode<L> minNode = null;
         double minDistance = Double.POSITIVE_INFINITY;
@@ -86,14 +91,16 @@ public class DijkstraShortestPathComputer<L>
 
     @Override
     public void computeShortestPathsFrom(GraphNode<L> sourceNode) {
+        GraphNode<L> localSourceNode = getNodeFrom(sourceNode);
         Set<GraphNode<L>> nodes = new HashSet<>();
         for(GraphNode<L> node : this.getGraph().getNodes()){
             node.setFloatingPointDistance(Double.POSITIVE_INFINITY);
             nodes.add(node);
         }
-        sourceNode.setFloatingPointDistance(0);
+        localSourceNode.setFloatingPointDistance(0);
         while(!nodes.isEmpty()){
-            GraphNode<L> minNode = extractMin(nodes);               //Estraggo il nodo con distanza minima
+            GraphNode<L> minNode = extractMin(nodes);
+            //Estraggo il nodo con distanza minima
             for(GraphNode<L> adjacentNode : getGraph().getAdjacentNodesOf(minNode)){
                 GraphEdge<L> edge = getGraph().getEdge(minNode,adjacentNode);
                 if(edge != null) {
@@ -105,7 +112,7 @@ public class DijkstraShortestPathComputer<L>
                 }
             }
         }
-        this.lastSource = sourceNode;
+        this.lastSource = localSourceNode;
     }
 
     @Override
@@ -128,17 +135,18 @@ public class DijkstraShortestPathComputer<L>
 
     @Override
     public List<GraphEdge<L>> getShortestPathTo(GraphNode<L> targetNode) {
-        if(targetNode == null){
+        GraphNode<L> localTargetNode = getNodeFrom(targetNode);
+        if(localTargetNode == null){
             throw new NullPointerException("Il nodo passato è nullo");
         }
-        if(!this.getGraph().containsNode(targetNode)){
+        if(!this.getGraph().containsNode(localTargetNode)){
             throw new IllegalArgumentException("Il nodo passato non esiste nel grafo");
         }
         if(!isComputed()){
             throw new IllegalStateException("Non è mai stato eseguito il calcolo del cammino minimo");
         }
         List<GraphEdge<L>> edges = new ArrayList<>();
-        GraphNode<L> child = targetNode;
+        GraphNode<L> child = localTargetNode;
         while(child != getLastSource()){
             //Percorso all'indietro sulla lista che associa nodi padre e nodi figli del percorso minimo
             GraphNode<L> parent = parentsMap.get(child);

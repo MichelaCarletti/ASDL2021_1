@@ -79,13 +79,13 @@ public class KruskalMSP<L> {
         GraphEdge<L> key;
         int j;
         for(int i = 0; i < edges.size(); i ++){
-            key = edges[i];
+            /*key = edges[i];
             j = i -1;
             while((j > 0)&&(edges[j] > key)){
                 edges[j + 1] = edges[j];
                 j = j -1;
             }
-            edges[i + 1] = key;
+            edges[i + 1] = key;*/
         }
         return edges;
     }
