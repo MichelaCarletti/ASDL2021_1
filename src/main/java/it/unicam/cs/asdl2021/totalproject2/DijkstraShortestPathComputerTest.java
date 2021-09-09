@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -19,6 +20,59 @@ class DijkstraShortestPathComputerTest {
 
     // TODO implementare: inserire i test che controllano lastSource e
     // isComputed
+    @Test
+    final void DijkstraShortestPathComputer() {
+        Graph<String> graph = new AdjacencyMatrixDirectedGraph<String>();
+        Graph<String> graph2 = new MapAdjacentListUndirectedGraph<>();
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(null);
+        }
+        catch(NullPointerException e){
+            nullException = true;
+        }
+        Assertions.assertTrue(nullException);
+        try{
+            BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph2);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        GraphNode<String> node1 = new GraphNode<>("Node1");
+        GraphNode<String> node2 = new GraphNode<>("Node2");
+        graph.addNode(node1);
+        graph.addNode(node2);
+        GraphEdge<String> edge1 = new GraphEdge<String>(node1,node2,true);
+        graph.addEdge(edge1);
+        try{
+            BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        GraphEdge<String> edge2 = new GraphEdge<String>(node1,node2,true,-10);
+        graph.addEdge(edge2);
+        try{
+            BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+    }
 
     @Test
     final void testGetShortestPathTo1() {
