@@ -70,7 +70,7 @@ public class PrimMSP<L> {
             throw new IllegalArgumentException("Il grafo passato è orientato");
         }
         for(GraphEdge<L> edge : g.getEdges()){
-            if(edge.getWeight() == Double.NaN){
+            if(!edge.hasWeight()){
                 throw new IllegalArgumentException(("Il grafo passato non è pesato"));
             }
             if(edge.getWeight() < 0){
@@ -82,6 +82,7 @@ public class PrimMSP<L> {
             node.setPriority(Double.POSITIVE_INFINITY);
             this.queue.insert(node);
             parentsMap.put(null, node);
+            node.setPrevious(null);
         }
         this.queue.minimum().setPriority(0);
         while(!this.queue.isEmpty()){
@@ -92,6 +93,7 @@ public class PrimMSP<L> {
                 if(((!visitedNodes.contains(node))&&(edge != null)&&(edge.getWeight() < node.getPriority()))){
                     queue.decreasePriority(node,edge.getWeight());
                     parentsMap.put(minNode, node);
+                    node.setPrevious(minNode);
                 }
             }
         }

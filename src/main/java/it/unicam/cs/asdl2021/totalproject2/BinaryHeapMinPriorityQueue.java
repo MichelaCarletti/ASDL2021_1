@@ -89,7 +89,8 @@ public class BinaryHeapMinPriorityQueue {
     }
 
     private void swap(PriorityQueueElement element1, PriorityQueueElement element2){
-        Collections.swap(this.heap,element1.getHandle(),element2.getHandle());      //Scambia la posizione nell'albero di element1 ed element2
+        Collections.swap(this.heap,element1.getHandle(),element2.getHandle());
+        //Scambia la posizione nell'albero di element1 ed element2
         int temp = element1.getHandle();
         element1.setHandle(element2.getHandle());
         element2.setHandle(temp);
@@ -166,11 +167,8 @@ public class BinaryHeapMinPriorityQueue {
         else {
             PriorityQueueElement leaf = this.heap.get(heap.size() - 1);
             swap(min, leaf);
-            shiftDown(leaf);
             this.heap.remove(min.getHandle());
-            for(PriorityQueueElement element : this.heap){
-                element.setHandle(element.getHandle() - 1);
-            }
+            shiftDown(leaf);
             return min;
         }
     }

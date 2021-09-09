@@ -27,14 +27,14 @@ class DijkstraShortestPathComputerTest {
         boolean nullException = false;
         boolean illegalException = false;
         try{
-            BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(null);
+            DijkstraShortestPathComputer<String> path = new DijkstraShortestPathComputer<>(null);
         }
         catch(NullPointerException e){
             nullException = true;
         }
         Assertions.assertTrue(nullException);
         try{
-            BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
+            DijkstraShortestPathComputer<String> path = new DijkstraShortestPathComputer<>(graph);
         }
         catch(IllegalArgumentException e){
             illegalException = true;
@@ -42,7 +42,7 @@ class DijkstraShortestPathComputerTest {
         Assertions.assertTrue(illegalException);
         illegalException = false;
         try{
-            BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph2);
+            DijkstraShortestPathComputer<String> path = new DijkstraShortestPathComputer<>(graph2);
         }
         catch(IllegalArgumentException e){
             illegalException = true;
@@ -56,7 +56,7 @@ class DijkstraShortestPathComputerTest {
         GraphEdge<String> edge1 = new GraphEdge<String>(node1,node2,true);
         graph.addEdge(edge1);
         try{
-            BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
+            DijkstraShortestPathComputer<String> path = new DijkstraShortestPathComputer<>(graph);
         }
         catch(IllegalArgumentException e){
             illegalException = true;
@@ -66,7 +66,7 @@ class DijkstraShortestPathComputerTest {
         GraphEdge<String> edge2 = new GraphEdge<String>(node1,node2,true,-10);
         graph.addEdge(edge2);
         try{
-            BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
+            DijkstraShortestPathComputer<String> path = new DijkstraShortestPathComputer<>(graph);
         }
         catch(IllegalArgumentException e){
             illegalException = true;

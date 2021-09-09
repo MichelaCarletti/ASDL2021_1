@@ -60,7 +60,7 @@ public class DijkstraShortestPathComputer<L>
             throw new IllegalArgumentException(("Il grafo passato non è orientato"));
         }
         for(GraphEdge<L> edge : graph.getEdges()){
-            if(edge.getWeight() == Double.NaN){
+            if(!edge.hasWeight()){
                 throw new IllegalArgumentException(("Il grafo passato non è pesato"));
             }
             if(edge.getWeight() < 0){
