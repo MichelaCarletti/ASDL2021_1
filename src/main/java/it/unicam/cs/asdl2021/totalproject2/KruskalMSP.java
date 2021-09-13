@@ -1,8 +1,6 @@
 package it.unicam.cs.asdl2021.totalproject2;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 
@@ -25,7 +23,6 @@ public class KruskalMSP<L> {
     private ArrayList<HashSet<GraphNode<L>>> disjointSets;
 
 
-    // TODO implementare: inserire eventuali altre variabili istanza
 
     /**
      * Costruisce un calcolatore di un albero di copertura minimo che usa
@@ -33,7 +30,6 @@ public class KruskalMSP<L> {
      */
     public KruskalMSP() {
         this.disjointSets = new ArrayList<HashSet<GraphNode<L>>>();
-        // TODO implementare: completare con eventuali altre inizializzazioni
     }
 
     /**
@@ -54,8 +50,8 @@ public class KruskalMSP<L> {
         if(g == null){
             throw new NullPointerException("Il grafo passato è nullo");
         }
-        if(!g.isDirected()){
-            throw new IllegalArgumentException(("Il grafo passato non è orientato"));
+        if(g.isDirected()){
+            throw new IllegalArgumentException(("Il grafo passato è orientato"));
         }
         for(GraphEdge<L> edge : g.getEdges()){
             if(edge.getWeight() == Double.NaN){
@@ -65,28 +61,41 @@ public class KruskalMSP<L> {
                 throw new IllegalArgumentException(("Il grafo passato ha almeno un peso negativo"));
             }
         }
+        Set<GraphEdge<L>> result = new HashSet<>();
         for(GraphNode<L> node : g.getNodes()){
-            //Creare V alberi, uno per ogni vertice
+            HashSet<GraphNode<L>> set = new HashSet<>();
+            set.add(node);
+            disjointSets.add(set);
         }
-        Set<GraphEdge<L>> orderedEdges = orderEdges(g.getEdges());
-        for(GraphEdge<L> edge : g.getEdges()){
-            //Verifica se i due nodi dell'arco appartengono allo stesso albero
+        ArrayList<GraphEdge<L>> orderedEdges = new ArrayList<>();
+        //A differenza di Set, con LinkedHashSet l'ordine degli elementi è garantito
+        orderedEdges.addAll(g.getEdges());
+        Collections.sort(orderedEdges);
+        for(GraphEdge<L> edge : orderedEdges){
+            int set1 = findSet(edge.getNode1());
+            int set2 = findSet(edge.getNode2());
+            if(set1 != set2){
+                result.add(edge);
+                union(set1 , set2);
+            }
         }
-        return null;
+        return result;
     }
 
-    private Set<GraphEdge<L>> orderEdges(Set<GraphEdge<L>> edges){
-        GraphEdge<L> key;
-        int j;
-        for(int i = 0; i < edges.size(); i ++){
-            /*key = edges[i];
-            j = i -1;
-            while((j > 0)&&(edges[j] > key)){
-                edges[j + 1] = edges[j];
-                j = j -1;
+    private int findSet(GraphNode<L> node){
+        for(int i = 0; i < disjointSets.size(); i ++){
+            Set<GraphNode<L>> nodes = disjointSets.get(i);
+            if(nodes.contains(node)){
+                return i;
             }
-            edges[i + 1] = key;*/
         }
-        return edges;
+        return -1;
+    }
+
+    private void union(int indexSet1, int indexSet2){
+        Set<GraphNode<L>> set1 = disjointSets.get(indexSet1);
+        Set<GraphNode<L>> set2 = disjointSets.get(indexSet2);
+        set1.addAll(set2);
+        disjointSets.remove(set2);
     }
 }

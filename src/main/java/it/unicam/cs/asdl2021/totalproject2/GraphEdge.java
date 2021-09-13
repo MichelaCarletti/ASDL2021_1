@@ -31,7 +31,9 @@ package it.unicam.cs.asdl2021.totalproject2;
  *                etichette dei nodi del grafo
  *
  */
-public class GraphEdge<L> {
+public class GraphEdge<L> implements Comparable {
+
+    //La scelta di Comparable serve per facilitare l'ordinamento degli archi sull'algoritmo di Kruskal
 
     private final GraphNode<L> node1;
 
@@ -217,5 +219,25 @@ public class GraphEdge<L> {
         else
             return "Edge [ " + this.node1.toString() + " -- "
                     + this.node2.toString() + " ]";
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof GraphEdge){
+            //istanceof controlla anche se è null
+            GraphEdge<L> other = (GraphEdge<L>) o;
+            if(this.getWeight() > other.getWeight()){
+                return 1;
+            }
+            if(this.getWeight() < other.getWeight()){
+                return -1;
+            }
+            else{
+                return 0;
+            }
+        }
+        else{
+            throw new IllegalArgumentException(("L'oggetto passato non è un'istanza di GraphEdge"));
+        }
     }
 }

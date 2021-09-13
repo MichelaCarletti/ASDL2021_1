@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -13,10 +14,6 @@ import org.junit.jupiter.api.Test;
  *
  */
 class KruskalMSPTest {
-
-    // TODO implementare: aggiungere i test che controllano le eccezioni
-
-    // TODO implementare: aggiungere altri test che controllano il risultato
 
     @Test
     final void testComputeMSP() {
@@ -64,6 +61,51 @@ class KruskalMSPTest {
         result.add(new GraphEdge<String>(f, g, false, 2));
         result.add(new GraphEdge<String>(g, h, false, 1));
         assertTrue(alg.computeMSP(gr).equals(result));
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            alg.computeMSP(null);
+        }
+        catch(NullPointerException exc){
+            nullException = true;
+        }
+        Assertions.assertTrue(nullException);
+        try{
+            Graph<String> orientedGraph = new AdjacencyMatrixDirectedGraph<>();
+            alg.computeMSP(orientedGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> notWeightGraph = new AdjacencyMatrixDirectedGraph<>();
+            GraphNode<String> node1 = new GraphNode<String>("a");
+            notWeightGraph.addNode(node1);
+            GraphNode<String> node2 = new GraphNode<String>("b");
+            notWeightGraph.addNode(node2);
+            notWeightGraph.addEdge(new GraphEdge<String>(node1, node2, false));
+            alg.computeMSP(notWeightGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> notWeightGraph = new AdjacencyMatrixDirectedGraph<>();
+            GraphNode<String> node1 = new GraphNode<String>("a");
+            notWeightGraph.addNode(node1);
+            GraphNode<String> node2 = new GraphNode<String>("b");
+            notWeightGraph.addNode(node2);
+            notWeightGraph.addEdge(new GraphEdge<String>(node1, node2, false, -8));
+            alg.computeMSP(notWeightGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
     }
 
 }

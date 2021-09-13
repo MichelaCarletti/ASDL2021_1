@@ -79,12 +79,16 @@ public class PrimMSP<L> {
         }
         ArrayList<GraphNode<L>> visitedNodes = new ArrayList<>();
         for(GraphNode<L> node : g.getNodes()){
-            node.setPriority(Double.POSITIVE_INFINITY);
+            if(node.equals(s)) {
+                node.setPriority(0);
+            }
+            else{
+                node.setPriority(Double.POSITIVE_INFINITY);
+            }
             this.queue.insert(node);
             parentsMap.put(null, node);
             node.setPrevious(null);
         }
-        this.queue.minimum().setPriority(0);
         while(!this.queue.isEmpty()){
             GraphNode<L> minNode = (GraphNode<L>)this.queue.extractMinimum();
             visitedNodes.add(minNode);

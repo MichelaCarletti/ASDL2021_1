@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -14,8 +16,6 @@ import java.util.List;
  *
  */
 class BellmanFordShortestPathComputerTest {
-
-    // TODO implementare tutti i test non ancora implementati
 
     @Test
     final void testBellmanFordShortestPathComputer() {
@@ -50,7 +50,7 @@ class BellmanFordShortestPathComputerTest {
         GraphNode<String> node2 = new GraphNode<>("Node2");
         graph.addNode(node1);
         graph.addNode(node2);
-        GraphEdge<String> edge = new GraphEdge<String>(node1,node2,true,0);
+        GraphEdge<String> edge = new GraphEdge<String>(node1,node2,true);
         graph.addEdge(edge);
         try{
             BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
@@ -63,31 +63,145 @@ class BellmanFordShortestPathComputerTest {
 
     @Test
     final void testComputeShortestPathsFrom() {
-        fail("Not yet implemented");
+        Graph<String> graph = new AdjacencyMatrixDirectedGraph<String>();
+        GraphNode<String> node1 = new GraphNode<>("Node1");
+        GraphNode<String> node2 = new GraphNode<>("Node2");
+        GraphNode<String> node3 = new GraphNode<>("Node3");
+        GraphNode<String> node4 = new GraphNode<>("Node4");
+        GraphNode<String> node5 = new GraphNode<>("Node5");
+        graph.addNode(node1);
+        graph.addNode(node2);
+        graph.addNode(node3);
+        graph.addNode(node4);
+        graph.addNode(node5);
+        GraphEdge<String> edge1 = new GraphEdge<String>(node1,node2,true,6);
+        graph.addEdge(edge1);
+        GraphEdge<String> edge2 = new GraphEdge<String>(node1,node5,true,7);
+        graph.addEdge(edge2);
+        GraphEdge<String> edge3 = new GraphEdge<String>(node2,node3,true,5);
+        graph.addEdge(edge3);
+        GraphEdge<String> edge4 = new GraphEdge<String>(node2,node4,true,-4);
+        graph.addEdge(edge4);
+        GraphEdge<String> edge5 = new GraphEdge<String>(node2,node5,true,8);
+        graph.addEdge(edge5);
+        GraphEdge<String> edge6 = new GraphEdge<String>(node3,node2,true,-2);
+        graph.addEdge(edge6);
+        GraphEdge<String> edge7 = new GraphEdge<String>(node4,node3,true,7);
+        graph.addEdge(edge7);
+        GraphEdge<String> edge8 = new GraphEdge<String>(node4,node1,true,2);
+        graph.addEdge(edge8);
+        GraphEdge<String> edge9 = new GraphEdge<String>(node5,node4,true,9);
+        graph.addEdge(edge9);
+        GraphEdge<String> edge10 = new GraphEdge<String>(node5,node3,true,-3);
+        graph.addEdge(edge10);
+        BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
+        path.computeShortestPathsFrom(node1);
+        HashMap<GraphNode<String>,GraphNode<String>> parents = new HashMap<>();
+        parents.put(node1,node5);
+        parents.put(node5,node3);
+        parents.put(node3,node2);
+        parents.put(node4,node2);
+        Assertions.assertEquals(parents,path.parentsMap);
     }
 
     @Test
     final void testIsComputed() {
-        Graph<String> graph = new AdjacencyMatrixDirectedGraph<String>();
-        BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
-        GraphNode<String> node1 = new GraphNode<>("Node1");
-        GraphNode<String> node2 = new GraphNode<>("Node2");
-        graph.addNode(node1);
-        graph.addNode(node2);
-        GraphEdge<String> edge = new GraphEdge<String>(node1,node2,true,5);
-        graph.addEdge(edge);
-        path.computeShortestPathsFrom(node1);
-        fail("Not yet implemented"); // TODO
+        Graph<String> g = new AdjacencyMatrixDirectedGraph<String>();
+        GraphNode<String> ns = new GraphNode<String>("s");
+        g.addNode(ns);
+        GraphNode<String> nu = new GraphNode<String>("u");
+        g.addNode(nu);
+        GraphEdge<String> esu = new GraphEdge<String>(ns, nu, true, 10.1);
+        g.addEdge(esu);
+        GraphNode<String> nx = new GraphNode<String>("x");
+        g.addNode(nx);
+        GraphEdge<String> esx = new GraphEdge<String>(ns, nx, true, 5.12);
+        g.addEdge(esx);
+        GraphEdge<String> eux = new GraphEdge<String>(nu, nx, true, -2.05);
+        g.addEdge(eux);
+        GraphEdge<String> exu = new GraphEdge<String>(nx, nu, true, 3.04);
+        g.addEdge(exu);
+        GraphNode<String> ny = new GraphNode<String>("y");
+        g.addNode(ny);
+        GraphEdge<String> exy = new GraphEdge<String>(nx, ny, true, -2.0);
+        g.addEdge(exy);
+        GraphEdge<String> eys = new GraphEdge<String>(ny, ns, true, 7.03);
+        BellmanFordShortestPathComputer<String> c = new BellmanFordShortestPathComputer<String>(
+                g);
+        Assertions.assertFalse(c.isComputed());
+        c.computeShortestPathsFrom(ns);
+        Assertions.assertTrue(c.isComputed());
     }
 
     @Test
     final void testGetLastSource() {
-        fail("Not yet implemented"); // TODO
+        Graph<String> graph = new AdjacencyMatrixDirectedGraph<String>();
+        GraphNode<String> node1 = new GraphNode<>("Node1");
+        GraphNode<String> node2 = new GraphNode<>("Node2");
+        GraphNode<String> node3 = new GraphNode<>("Node3");
+        GraphNode<String> node4 = new GraphNode<>("Node4");
+        GraphNode<String> node5 = new GraphNode<>("Node5");
+        graph.addNode(node1);
+        graph.addNode(node2);
+        graph.addNode(node3);
+        graph.addNode(node4);
+        graph.addNode(node5);
+        GraphEdge<String> edge1 = new GraphEdge<String>(node1,node2,true,6);
+        graph.addEdge(edge1);
+        GraphEdge<String> edge2 = new GraphEdge<String>(node1,node5,true,7);
+        graph.addEdge(edge2);
+        GraphEdge<String> edge3 = new GraphEdge<String>(node2,node3,true,5);
+        graph.addEdge(edge3);
+        GraphEdge<String> edge4 = new GraphEdge<String>(node2,node4,true,-4);
+        graph.addEdge(edge4);
+        GraphEdge<String> edge5 = new GraphEdge<String>(node2,node5,true,8);
+        graph.addEdge(edge5);
+        GraphEdge<String> edge6 = new GraphEdge<String>(node3,node2,true,-2);
+        graph.addEdge(edge6);
+        GraphEdge<String> edge7 = new GraphEdge<String>(node4,node3,true,7);
+        graph.addEdge(edge7);
+        GraphEdge<String> edge8 = new GraphEdge<String>(node4,node1,true,2);
+        graph.addEdge(edge8);
+        GraphEdge<String> edge9 = new GraphEdge<String>(node5,node4,true,9);
+        graph.addEdge(edge9);
+        GraphEdge<String> edge10 = new GraphEdge<String>(node5,node3,true,-3);
+        graph.addEdge(edge10);
+        BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
+        path.computeShortestPathsFrom(node1);
+        Assertions.assertEquals(node4, path.getLastSource());
     }
 
     @Test
     final void testGetGraph() {
-        fail("Not yet implemented"); // TODO
+        Graph<String> graph1 = new AdjacencyMatrixDirectedGraph<String>();
+        Graph<String> graph2 = new AdjacencyMatrixDirectedGraph<String>();
+        GraphNode<String> node1 = new GraphNode<>("Node1");
+        GraphNode<String> node2 = new GraphNode<>("Node2");
+        GraphNode<String> node3 = new GraphNode<>("Node3");
+        GraphNode<String> node4 = new GraphNode<>("Node4");
+        GraphNode<String> node5 = new GraphNode<>("Node5");
+        graph1.addNode(node1);
+        graph2.addNode(node1);
+        graph1.addNode(node2);
+        graph2.addNode(node2);
+        graph1.addNode(node3);
+        graph2.addNode(node3);
+        graph1.addNode(node4);
+        graph2.addNode(node4);
+        graph1.addNode(node5);
+        graph2.addNode(node5);
+        GraphEdge<String> edge1 = new GraphEdge<String>(node1,node2,true,6);
+        graph1.addEdge(edge1);
+        graph2.addEdge(edge1);
+        GraphEdge<String> edge2 = new GraphEdge<String>(node1,node5,true,7);
+        graph1.addEdge(edge2);
+        graph2.addEdge(edge2);
+        GraphEdge<String> edge3 = new GraphEdge<String>(node2,node3,true,5);
+        graph1.addEdge(edge3);
+        graph2.addEdge(edge3);
+        BellmanFordShortestPathComputer<String> c = new BellmanFordShortestPathComputer<String>(
+                graph1);
+        Assertions.assertEquals(graph2, c.getGraph());
     }
 
     @Test
@@ -124,7 +238,16 @@ class BellmanFordShortestPathComputerTest {
         g.addEdge(eyv);
         GraphEdge<String> evy = new GraphEdge<String>(nv, ny, true, 4.07);
         g.addEdge(evy);
-        BellmanFordShortestPathComputer<String> c = new BellmanFordShortestPathComputer<>(g);
+        BellmanFordShortestPathComputer<String> c = new BellmanFordShortestPathComputer<String>(
+                g);
+        boolean illegalException = false;
+        try{
+            illegalException = c.isComputed();
+        }
+        catch(IllegalStateException e){
+        }
+        Assertions.assertFalse(illegalException);
+        illegalException = false;
         GraphNode<String> nsTest = new GraphNode<String>("s");
         c.computeShortestPathsFrom(nsTest);
         List<GraphEdge<String>> pathTest = new ArrayList<GraphEdge<String>>();
@@ -151,6 +274,22 @@ class BellmanFordShortestPathComputerTest {
                 2.0);
         pathTest.add(exyTest);
         assertTrue(c.getShortestPathTo(nyTest).equals(pathTest));
+        boolean nullException = false;
+        try {
+            c.computeShortestPathsFrom(null);
+        }
+        catch(NullPointerException e){
+            nullException = true;
+        }
+        Assertions.assertTrue(nullException);
+        try {
+            GraphNode<String> notExistNode = new GraphNode<>("Not exist");
+            c.computeShortestPathsFrom(notExistNode);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
     }
 
 }
