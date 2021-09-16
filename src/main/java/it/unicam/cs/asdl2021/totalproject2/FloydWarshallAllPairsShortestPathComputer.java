@@ -1,5 +1,8 @@
 package it.unicam.cs.asdl2021.totalproject2;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,6 +38,8 @@ public class FloydWarshallAllPairsShortestPathComputer<L> {
      * la classe che implementa il grafo supporti le operazioni con indici).
      */
     private int[][] predecessorMatrix;
+
+    boolean isComputed = false;
 
     /**
      * Crea un calcolatore di cammini minimi fra tutte le coppie di nodi per un
@@ -72,6 +77,9 @@ public class FloydWarshallAllPairsShortestPathComputer<L> {
                 throw new IllegalArgumentException(("Il grafo passato non è pesato"));
             }
         }
+        this.graph = g;
+        this.predecessorMatrix = new int[g.nodeCount()][g.nodeCount()];
+        this.costMatrix = new double[g.nodeCount()][g.nodeCount()];
     }
 
     /**
@@ -86,7 +94,32 @@ public class FloydWarshallAllPairsShortestPathComputer<L> {
      *                                   di peso negativo.
      */
     public void computeShortestPaths() {
-        // TODO implementare
+        this.isComputed = true;
+        int nodeCount = this.getGraph().nodeCount();
+        for(int i = 0; i < nodeCount; i ++){
+            for(int j = 0; j < nodeCount; j ++){
+                GraphEdge<L> edge = this.getGraph().getEdgeAtNodeIndexes(i, j);
+                if(edge != null){
+                    this.predecessorMatrix[i][j] = i;
+                    this.costMatrix[i][j] = edge.getWeight();
+                }
+                else{
+                    this.predecessorMatrix[i][j] = -1;
+                    this.costMatrix[i][j] = Double.POSITIVE_INFINITY;
+                }
+            }
+        }
+        for(int k = 0; k < nodeCount; k ++){
+            for(int i = 0; i < nodeCount; i ++) {
+                for (int j = 0; j < nodeCount; j++) {
+                    double newDistance = this.costMatrix[i][k] + this.costMatrix[k][j];
+                    if(newDistance < this.costMatrix[i][j]){
+                        this.costMatrix[i][j] = newDistance;
+                        this.predecessorMatrix[i][j] = k;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -95,8 +128,7 @@ public class FloydWarshallAllPairsShortestPathComputer<L> {
      * @return true se i cammini minimi sono stati calcolati, false altrimenti
      */
     public boolean isComputed() {
-        // TODO implementare
-        return false;
+        return this.isComputed;
     }
 
     /**
@@ -139,9 +171,22 @@ public class FloydWarshallAllPairsShortestPathComputer<L> {
      */
     public List<GraphEdge<L>> getShortestPath(GraphNode<L> sourceNode,
             GraphNode<L> targetNode) {
-        // TODO implementare
-
-        return null;
+        int indexSource = getGraph().getNodeIndexOf(sourceNode.getLabel());
+        int indexTarget = getGraph().getNodeIndexOf(targetNode.getLabel());
+        int predecessor = this.predecessorMatrix[indexSource][indexTarget];
+        List<GraphEdge<L>> edges = new ArrayList<>();
+        while(indexSource != predecessor) {
+            if (predecessor != -1) {
+                edges.add(getGraph().getEdgeAtNodeIndexes(predecessor, indexTarget));
+                indexTarget = predecessor;
+                predecessor = this.predecessorMatrix[indexSource][indexTarget];
+            } else {
+                //Non esite il cammino tra sourceNode e targetNode
+                return null;
+            }
+        }
+        Collections.reverse(edges);
+        return edges;
     }
 
     /**

@@ -356,6 +356,4 @@ public class AdjacencyMatrixDirectedGraph<L> extends Graph<L> {
         }
         return null;
     }
-
-    // TODO inserire eventuali metodi privati per fini di implementazione
 }

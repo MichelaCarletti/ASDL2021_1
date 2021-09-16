@@ -60,12 +60,13 @@ public class BellmanFordShortestPathComputer<L>
 
     @Override
     public void computeShortestPathsFrom(GraphNode<L> sourceNode) {
+        GraphNode<L> localSourceNode = getNodeFrom(sourceNode);
         Set<GraphNode<L>> nodes = new HashSet<>();
         for(GraphNode<L> node : this.getGraph().getNodes()){
             node.setFloatingPointDistance(Double.POSITIVE_INFINITY);
             nodes.add(node);
         }
-        sourceNode.setFloatingPointDistance(0);
+        localSourceNode.setFloatingPointDistance(0);
         for(int i = 0; i < graph.nodeCount(); i ++) {
             for (GraphEdge<L> graphEdge : this.getGraph().getEdges()) {
                 GraphNode<L> node1 = graphEdge.getNode1();
@@ -83,7 +84,7 @@ public class BellmanFordShortestPathComputer<L>
                throw new IllegalArgumentException("Il grafo contiene un ciclo di peso negativo");
            }
         }
-        this.lastSource = sourceNode;
+        this.lastSource = localSourceNode;
     }
 
     @Override
@@ -103,22 +104,24 @@ public class BellmanFordShortestPathComputer<L>
 
     @Override
     public List<GraphEdge<L>> getShortestPathTo(GraphNode<L> targetNode) {
-        if(targetNode == null){
+        GraphNode<L> localTargetNode = getNodeFrom(targetNode);
+        if(localTargetNode == null){
             throw new NullPointerException("Il nodo passato è nullo");
         }
-        if(!this.getGraph().containsNode(targetNode)){
+        if(!this.getGraph().containsNode(localTargetNode)){
             throw new IllegalArgumentException("Il nodo passato non esiste nel grafo");
         }
         if(!isComputed()){
             throw new IllegalStateException("Non è mai stato eseguito il calcolo del cammino minimo");
         }
         List<GraphEdge<L>> edges = new ArrayList<>();
-        GraphNode<L> child = targetNode;
-        while(child != getLastSource()){
+        GraphNode<L> child = localTargetNode;
+        while(!child.equals(getLastSource())){
             //Percorso all'indietro sulla lista che associa nodi padre e nodi figli del percorso minimo
             GraphNode<L> parent = parentsMap.get(child);
             if(parent != null){
                 edges.add(graph.getEdge(parent,child));
+                child = parent;
             }
             else{
                 //Se parent è null vuol dire che non c'è l'arco, quindi il percorso non esiste
@@ -127,5 +130,10 @@ public class BellmanFordShortestPathComputer<L>
         }
         Collections.reverse(edges);
         return edges;
+    }
+
+    private GraphNode<L> getNodeFrom(GraphNode<L> node){
+        int index = graph.getNodeIndexOf(node.getLabel());
+        return graph.getNodeAtIndex(index);
     }
 }

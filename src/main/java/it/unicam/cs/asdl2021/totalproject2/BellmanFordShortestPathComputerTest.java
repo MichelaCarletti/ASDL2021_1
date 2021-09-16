@@ -86,7 +86,7 @@ class BellmanFordShortestPathComputerTest {
         graph.addEdge(edge5);
         GraphEdge<String> edge6 = new GraphEdge<String>(node3,node2,true,-2);
         graph.addEdge(edge6);
-        GraphEdge<String> edge7 = new GraphEdge<String>(node4,node3,true,7);
+        GraphEdge<String> edge7 = new GraphEdge<String>(node4,node3,true,3);
         graph.addEdge(edge7);
         GraphEdge<String> edge8 = new GraphEdge<String>(node4,node1,true,2);
         graph.addEdge(edge8);
@@ -95,13 +95,14 @@ class BellmanFordShortestPathComputerTest {
         GraphEdge<String> edge10 = new GraphEdge<String>(node5,node3,true,-3);
         graph.addEdge(edge10);
         BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
-        path.computeShortestPathsFrom(node1);
-        HashMap<GraphNode<String>,GraphNode<String>> parents = new HashMap<>();
-        parents.put(node1,node5);
-        parents.put(node5,node3);
-        parents.put(node3,node2);
-        parents.put(node4,node2);
-        Assertions.assertEquals(parents,path.parentsMap);
+        boolean illegalExcpetion = false;
+        try {
+            path.computeShortestPathsFrom(node1);
+        }
+        catch(IllegalArgumentException e){
+            illegalExcpetion = true;
+        }
+        Assertions.assertTrue(illegalExcpetion);
     }
 
     @Test
@@ -168,40 +169,32 @@ class BellmanFordShortestPathComputerTest {
         graph.addEdge(edge10);
         BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
         path.computeShortestPathsFrom(node1);
-        Assertions.assertEquals(node4, path.getLastSource());
+        GraphNode<String> node1Test = new GraphNode<>("Node1");
+        Assertions.assertEquals(node1Test, path.getLastSource());
     }
 
     @Test
     final void testGetGraph() {
         Graph<String> graph1 = new AdjacencyMatrixDirectedGraph<String>();
-        Graph<String> graph2 = new AdjacencyMatrixDirectedGraph<String>();
         GraphNode<String> node1 = new GraphNode<>("Node1");
         GraphNode<String> node2 = new GraphNode<>("Node2");
         GraphNode<String> node3 = new GraphNode<>("Node3");
         GraphNode<String> node4 = new GraphNode<>("Node4");
         GraphNode<String> node5 = new GraphNode<>("Node5");
         graph1.addNode(node1);
-        graph2.addNode(node1);
         graph1.addNode(node2);
-        graph2.addNode(node2);
         graph1.addNode(node3);
-        graph2.addNode(node3);
         graph1.addNode(node4);
-        graph2.addNode(node4);
         graph1.addNode(node5);
-        graph2.addNode(node5);
         GraphEdge<String> edge1 = new GraphEdge<String>(node1,node2,true,6);
         graph1.addEdge(edge1);
-        graph2.addEdge(edge1);
         GraphEdge<String> edge2 = new GraphEdge<String>(node1,node5,true,7);
         graph1.addEdge(edge2);
-        graph2.addEdge(edge2);
         GraphEdge<String> edge3 = new GraphEdge<String>(node2,node3,true,5);
         graph1.addEdge(edge3);
-        graph2.addEdge(edge3);
         BellmanFordShortestPathComputer<String> c = new BellmanFordShortestPathComputer<String>(
                 graph1);
-        Assertions.assertEquals(graph2, c.getGraph());
+        Assertions.assertEquals(graph1, c.getGraph());
     }
 
     @Test
