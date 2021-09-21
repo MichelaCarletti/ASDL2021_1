@@ -95,14 +95,23 @@ class BellmanFordShortestPathComputerTest {
         GraphEdge<String> edge10 = new GraphEdge<String>(node5,node3,true,-3);
         graph.addEdge(edge10);
         BellmanFordShortestPathComputer<String> path = new BellmanFordShortestPathComputer<>(graph);
-        boolean illegalExcpetion = false;
+        boolean illegalException = false;
         try {
             path.computeShortestPathsFrom(node1);
         }
         catch(IllegalArgumentException e){
-            illegalExcpetion = true;
+            illegalException = true;
         }
-        Assertions.assertTrue(illegalExcpetion);
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            edge4.setWeight(-7);
+            path.computeShortestPathsFrom(node1);
+        }
+        catch(IllegalArgumentException e){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
     }
 
     @Test

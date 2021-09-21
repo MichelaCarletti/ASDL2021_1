@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 class KruskalMSPTest {
 
     @Test
-    final void testComputeMSP() {
+    final void testComputeMSP1() {
         Graph<String> gr = new MapAdjacentListUndirectedGraph<String>();
         GraphNode<String> a = new GraphNode<String>("a");
         gr.addNode(a);
@@ -108,4 +108,315 @@ class KruskalMSPTest {
         Assertions.assertTrue(illegalException);
     }
 
+    @Test
+    final void testComputeMSP2() {
+        Graph<String> gr = new MapAdjacentListUndirectedGraph<String>();
+        GraphNode<String> a = new GraphNode<String>("a");
+        gr.addNode(a);
+        GraphNode<String> b = new GraphNode<String>("b");
+        gr.addNode(b);
+        GraphNode<String> c = new GraphNode<String>("c");
+        gr.addNode(c);
+        GraphNode<String> d = new GraphNode<String>("d");
+        gr.addNode(d);
+        gr.addEdge(new GraphEdge<String>(a, b, false, 1));
+        gr.addEdge(new GraphEdge<String>(a, c, false, 5));
+        gr.addEdge(new GraphEdge<String>(b, d, false, 2));
+        gr.addEdge(new GraphEdge<String>(b, c, false, 3));
+        gr.addEdge(new GraphEdge<String>(c, d, false, 4));
+        KruskalMSP<String> alg = new KruskalMSP<String>();
+        alg.computeMSP(gr);
+        assertTrue(a.getPrevious() == null);
+        assertTrue(b.getPrevious() == a);
+        assertTrue(c.getPrevious() == b);
+        assertTrue(d.getPrevious() == b);
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            alg.computeMSP(null);
+        }
+        catch(NullPointerException exc){
+            nullException = true;
+        }
+        Assertions.assertTrue(nullException);
+        try{
+            GraphNode<String> ne = new GraphNode<String>("Not exist");
+            alg.computeMSP(gr);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> undirectedGraph = new MapAdjacentListUndirectedGraph<>();
+            alg.computeMSP(undirectedGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> notWeightGraph = new AdjacencyMatrixDirectedGraph<>();
+            GraphNode<String> node1 = new GraphNode<String>("a");
+            notWeightGraph.addNode(node1);
+            GraphNode<String> node2 = new GraphNode<String>("b");
+            notWeightGraph.addNode(node2);
+            notWeightGraph.addEdge(new GraphEdge<String>(node1, node2, false));
+            alg.computeMSP(notWeightGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> negativeGraph = new AdjacencyMatrixDirectedGraph<>();
+            GraphNode<String> node1 = new GraphNode<String>("a");
+            negativeGraph.addNode(node1);
+            GraphNode<String> node2 = new GraphNode<String>("b");
+            negativeGraph.addNode(node2);
+            negativeGraph.addEdge(new GraphEdge<String>(node1, node2, false, -8));
+            alg.computeMSP(negativeGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+    }
+
+    @Test
+    final void testComputeMSP3() {
+        Graph<String> gr = new MapAdjacentListUndirectedGraph<String>();
+        GraphNode<String> a = new GraphNode<String>("a");
+        gr.addNode(a);
+        GraphNode<String> b = new GraphNode<String>("b");
+        gr.addNode(b);
+        GraphNode<String> c = new GraphNode<String>("c");
+        gr.addNode(c);
+        GraphNode<String> d = new GraphNode<String>("d");
+        gr.addNode(d);
+        gr.addEdge(new GraphEdge<String>(a, b, false, 1));
+        gr.addEdge(new GraphEdge<String>(a, c, false, 5));
+        gr.addEdge(new GraphEdge<String>(b, d, false, 2));
+        gr.addEdge(new GraphEdge<String>(b, c, false, 3));
+        gr.addEdge(new GraphEdge<String>(c, d, false, 4));
+        KruskalMSP<String> alg = new KruskalMSP<String>();
+        alg.computeMSP(gr);
+        assertTrue(a.getPrevious() == b);
+        assertTrue(b.getPrevious() == null);
+        assertTrue(c.getPrevious() == b);
+        assertTrue(d.getPrevious() == b);
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            alg.computeMSP(null);
+        }
+        catch(NullPointerException exc){
+            nullException = true;
+        }
+        Assertions.assertTrue(nullException);
+        try{
+            GraphNode<String> ne = new GraphNode<String>("Not exist");
+            alg.computeMSP(gr);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> undirectedGraph = new MapAdjacentListUndirectedGraph<>();
+            alg.computeMSP(undirectedGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> notWeightGraph = new AdjacencyMatrixDirectedGraph<>();
+            GraphNode<String> node1 = new GraphNode<String>("a");
+            notWeightGraph.addNode(node1);
+            GraphNode<String> node2 = new GraphNode<String>("b");
+            notWeightGraph.addNode(node2);
+            notWeightGraph.addEdge(new GraphEdge<String>(node1, node2, false));
+            alg.computeMSP(notWeightGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> negativeGraph = new AdjacencyMatrixDirectedGraph<>();
+            GraphNode<String> node1 = new GraphNode<String>("a");
+            negativeGraph.addNode(node1);
+            GraphNode<String> node2 = new GraphNode<String>("b");
+            negativeGraph.addNode(node2);
+            negativeGraph.addEdge(new GraphEdge<String>(node1, node2, false, -8));
+            alg.computeMSP(negativeGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+    }
+
+    @Test
+    final void testComputeMSP4() {
+        Graph<String> gr = new MapAdjacentListUndirectedGraph<String>();
+        GraphNode<String> a = new GraphNode<String>("a");
+        gr.addNode(a);
+        GraphNode<String> b = new GraphNode<String>("b");
+        gr.addNode(b);
+        GraphNode<String> c = new GraphNode<String>("c");
+        gr.addNode(c);
+        GraphNode<String> d = new GraphNode<String>("d");
+        gr.addNode(d);
+        gr.addEdge(new GraphEdge<String>(a, b, false, 1));
+        gr.addEdge(new GraphEdge<String>(a, c, false, 5));
+        gr.addEdge(new GraphEdge<String>(b, d, false, 2));
+        gr.addEdge(new GraphEdge<String>(b, c, false, 3));
+        gr.addEdge(new GraphEdge<String>(c, d, false, 4));
+        KruskalMSP<String> alg = new KruskalMSP<String>();
+        alg.computeMSP(gr);
+        assertTrue(a.getPrevious() == b);
+        assertTrue(b.getPrevious() == c);
+        assertTrue(c.getPrevious() == null);
+        assertTrue(d.getPrevious() == b);
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            alg.computeMSP(null);
+        }
+        catch(NullPointerException exc){
+            nullException = true;
+        }
+        Assertions.assertTrue(nullException);
+        try{
+            GraphNode<String> ne = new GraphNode<String>("Not exist");
+            alg.computeMSP(gr);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> undirectedGraph = new MapAdjacentListUndirectedGraph<>();
+            alg.computeMSP(undirectedGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> notWeightGraph = new AdjacencyMatrixDirectedGraph<>();
+            GraphNode<String> node1 = new GraphNode<String>("a");
+            notWeightGraph.addNode(node1);
+            GraphNode<String> node2 = new GraphNode<String>("b");
+            notWeightGraph.addNode(node2);
+            notWeightGraph.addEdge(new GraphEdge<String>(node1, node2, false));
+            alg.computeMSP(notWeightGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> negativeGraph = new AdjacencyMatrixDirectedGraph<>();
+            GraphNode<String> node1 = new GraphNode<String>("a");
+            negativeGraph.addNode(node1);
+            GraphNode<String> node2 = new GraphNode<String>("b");
+            negativeGraph.addNode(node2);
+            negativeGraph.addEdge(new GraphEdge<String>(node1, node2, false, -8));
+            alg.computeMSP(negativeGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+    }
+
+    @Test
+    final void testComputeMSP5() {
+        Graph<String> gr = new MapAdjacentListUndirectedGraph<String>();
+        GraphNode<String> a = new GraphNode<String>("a");
+        gr.addNode(a);
+        GraphNode<String> b = new GraphNode<String>("b");
+        gr.addNode(b);
+        GraphNode<String> c = new GraphNode<String>("c");
+        gr.addNode(c);
+        GraphNode<String> d = new GraphNode<String>("d");
+        gr.addNode(d);
+        gr.addEdge(new GraphEdge<String>(a, b, false, 1));
+        gr.addEdge(new GraphEdge<String>(a, c, false, 5));
+        gr.addEdge(new GraphEdge<String>(b, d, false, 2));
+        gr.addEdge(new GraphEdge<String>(b, c, false, 3));
+        gr.addEdge(new GraphEdge<String>(c, d, false, 4));
+        KruskalMSP<String> alg = new KruskalMSP<String>();
+        alg.computeMSP(gr);
+        assertTrue(a.getPrevious() == b);
+        assertTrue(b.getPrevious() == d);
+        assertTrue(c.getPrevious() == b);
+        assertTrue(d.getPrevious() == null);
+        boolean nullException = false;
+        boolean illegalException = false;
+        try{
+            alg.computeMSP(null);
+        }
+        catch(NullPointerException exc){
+            nullException = true;
+        }
+        Assertions.assertTrue(nullException);
+        try{
+            GraphNode<String> ne = new GraphNode<String>("Not exist");
+            alg.computeMSP(gr);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> undirectedGraph = new MapAdjacentListUndirectedGraph<>();
+            alg.computeMSP(undirectedGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> notWeightGraph = new AdjacencyMatrixDirectedGraph<>();
+            GraphNode<String> node1 = new GraphNode<String>("a");
+            notWeightGraph.addNode(node1);
+            GraphNode<String> node2 = new GraphNode<String>("b");
+            notWeightGraph.addNode(node2);
+            notWeightGraph.addEdge(new GraphEdge<String>(node1, node2, false));
+            alg.computeMSP(notWeightGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+        illegalException = false;
+        try{
+            Graph<String> negativeGraph = new AdjacencyMatrixDirectedGraph<>();
+            GraphNode<String> node1 = new GraphNode<String>("a");
+            negativeGraph.addNode(node1);
+            GraphNode<String> node2 = new GraphNode<String>("b");
+            negativeGraph.addNode(node2);
+            negativeGraph.addEdge(new GraphEdge<String>(node1, node2, false, -8));
+            alg.computeMSP(negativeGraph);
+        }
+        catch(IllegalArgumentException exc){
+            illegalException = true;
+        }
+        Assertions.assertTrue(illegalException);
+    }
 }
